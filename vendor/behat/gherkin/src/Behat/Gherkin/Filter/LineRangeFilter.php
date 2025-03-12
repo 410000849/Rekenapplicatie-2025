@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Behat Gherkin.
+ * This file is part of the Behat Gherkin Parser.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -22,22 +22,28 @@ use Behat\Gherkin\Node\ScenarioInterface;
  */
 class LineRangeFilter implements FilterInterface
 {
+    /**
+     * @var int
+     */
     protected $filterMinLine;
+    /**
+     * @var int
+     */
     protected $filterMaxLine;
 
     /**
      * Initializes filter.
      *
-     * @param string $filterMinLine Minimum line of a scenario to filter on
-     * @param string $filterMaxLine Maximum line of a scenario to filter on
+     * @param int|numeric-string $filterMinLine Minimum line of a scenario to filter on
+     * @param int|numeric-string|'*' $filterMaxLine Maximum line of a scenario to filter on
      */
     public function __construct($filterMinLine, $filterMaxLine)
     {
-        $this->filterMinLine = intval($filterMinLine);
-        if ($filterMaxLine == '*') {
+        $this->filterMinLine = (int) $filterMinLine;
+        if ($filterMaxLine === '*') {
             $this->filterMaxLine = PHP_INT_MAX;
         } else {
-            $this->filterMaxLine = intval($filterMaxLine);
+            $this->filterMaxLine = (int) $filterMaxLine;
         }
     }
 
@@ -81,13 +87,11 @@ class LineRangeFilter implements FilterInterface
     /**
      * Filters feature according to the filter.
      *
-     * @param FeatureNode $feature
-     *
      * @return FeatureNode
      */
     public function filterFeature(FeatureNode $feature)
     {
-        $scenarios = array();
+        $scenarios = [];
         foreach ($feature->getScenarios() as $scenario) {
             if (!$this->isScenarioMatch($scenario)) {
                 continue;
@@ -95,13 +99,13 @@ class LineRangeFilter implements FilterInterface
 
             if ($scenario instanceof OutlineNode && $scenario->hasExamples()) {
                 // first accumulate examples and then create scenario
-                $exampleTableNodes = array();
+                $exampleTableNodes = [];
 
                 foreach ($scenario->getExampleTables() as $exampleTable) {
                     $table = $exampleTable->getTable();
                     $lines = array_keys($table);
 
-                    $filteredTable = array($lines[0] => $table[$lines[0]]);
+                    $filteredTable = [$lines[0] => $table[$lines[0]]];
                     unset($table[$lines[0]]);
 
                     foreach ($table as $line => $row) {

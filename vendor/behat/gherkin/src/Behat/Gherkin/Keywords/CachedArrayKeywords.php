@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Behat Gherkin.
+ * This file is part of the Behat Gherkin Parser.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -19,6 +19,11 @@ namespace Behat\Gherkin\Keywords;
  */
 class CachedArrayKeywords extends ArrayKeywords
 {
+    public static function withDefaultKeywords(): self
+    {
+        return new self(__DIR__ . '/../../../../i18n.php');
+    }
+
     /**
      * Initializes holder with file.
      *
@@ -26,6 +31,6 @@ class CachedArrayKeywords extends ArrayKeywords
      */
     public function __construct($file)
     {
-        parent::__construct(include($file));
+        parent::__construct(require $file);
     }
 }

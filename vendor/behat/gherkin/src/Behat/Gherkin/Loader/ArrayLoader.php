@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Behat Gherkin.
+ * This file is part of the Behat Gherkin Parser.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -43,11 +43,11 @@ class ArrayLoader implements LoaderInterface
      *
      * @param mixed $resource Resource to load
      *
-     * @return FeatureNode[]
+     * @return list<FeatureNode>
      */
     public function load($resource)
     {
-        $features = array();
+        $features = [];
 
         if (isset($resource['features'])) {
             foreach ($resource['features'] as $iterator => $hash) {
@@ -65,30 +65,30 @@ class ArrayLoader implements LoaderInterface
     /**
      * Loads feature from provided feature hash.
      *
-     * @param array   $hash Feature hash
-     * @param integer $line
+     * @param array $hash Feature hash
+     * @param int $line
      *
      * @return FeatureNode
      */
     protected function loadFeatureHash(array $hash, $line = 0)
     {
         $hash = array_merge(
-            array(
+            [
                 'title' => null,
                 'description' => null,
-                'tags' => array(),
+                'tags' => [],
                 'keyword' => 'Feature',
                 'language' => 'en',
                 'line' => $line,
-                'scenarios' => array(),
-            ),
+                'scenarios' => [],
+            ],
             $hash
         );
         $background = isset($hash['background']) ? $this->loadBackgroundHash($hash['background']) : null;
 
-        $scenarios = array();
+        $scenarios = [];
         foreach ((array) $hash['scenarios'] as $scenarioIterator => $scenarioHash) {
-            if (isset($scenarioHash['type']) && 'outline' === $scenarioHash['type']) {
+            if (isset($scenarioHash['type']) && $scenarioHash['type'] === 'outline') {
                 $scenarios[] = $this->loadOutlineHash($scenarioHash, $scenarioIterator);
             } else {
                 $scenarios[] = $this->loadScenarioHash($scenarioHash, $scenarioIterator);
@@ -108,12 +108,12 @@ class ArrayLoader implements LoaderInterface
     protected function loadBackgroundHash(array $hash)
     {
         $hash = array_merge(
-            array(
+            [
                 'title' => null,
                 'keyword' => 'Background',
                 'line' => 0,
-                'steps' => array(),
-            ),
+                'steps' => [],
+            ],
             $hash
         );
 
@@ -125,21 +125,21 @@ class ArrayLoader implements LoaderInterface
     /**
      * Loads scenario from provided scenario hash.
      *
-     * @param array   $hash Scenario hash
-     * @param integer $line Scenario definition line
+     * @param array $hash Scenario hash
+     * @param int $line Scenario definition line
      *
      * @return ScenarioNode
      */
     protected function loadScenarioHash(array $hash, $line = 0)
     {
         $hash = array_merge(
-            array(
+            [
                 'title' => null,
-                'tags' => array(),
+                'tags' => [],
                 'keyword' => 'Scenario',
                 'line' => $line,
-                'steps' => array(),
-            ),
+                'steps' => [],
+            ],
             $hash
         );
 
@@ -151,22 +151,22 @@ class ArrayLoader implements LoaderInterface
     /**
      * Loads outline from provided outline hash.
      *
-     * @param array   $hash Outline hash
-     * @param integer $line Outline definition line
+     * @param array $hash Outline hash
+     * @param int $line Outline definition line
      *
      * @return OutlineNode
      */
     protected function loadOutlineHash(array $hash, $line = 0)
     {
         $hash = array_merge(
-            array(
+            [
                 'title' => null,
-                'tags' => array(),
+                'tags' => [],
                 'keyword' => 'Scenario Outline',
                 'line' => $line,
-                'steps' => array(),
-                'examples' => array(),
-            ),
+                'steps' => [],
+                'examples' => [],
+            ],
             $hash
         );
 
@@ -179,15 +179,7 @@ class ArrayLoader implements LoaderInterface
             $examplesKeyword = 'Examples';
         }
 
-        $exHash = $hash['examples'];
-        $examples = array();
-
-        if ($this->examplesAreInArray($exHash)) {
-            $examples = $this->processExamplesArray($exHash, $examplesKeyword, $examples);
-        } else {
-            // examples as a single table - we create an array with the only one element
-            $examples[] = new ExampleTableNode($exHash, $examplesKeyword);;
-        }
+        $examples = $this->loadExamplesHash($hash['examples'], $examplesKeyword);
 
         return new OutlineNode($hash['title'], $hash['tags'], $steps, $examples, $hash['keyword'], $hash['line']);
     }
@@ -195,13 +187,11 @@ class ArrayLoader implements LoaderInterface
     /**
      * Loads steps from provided hash.
      *
-     * @param array $hash
-     *
-     * @return StepNode[]
+     * @return list<StepNode>
      */
     private function loadStepsHash(array $hash)
     {
-        $steps = array();
+        $steps = [];
         foreach ($hash as $stepIterator => $stepHash) {
             $steps[] = $this->loadStepHash($stepHash, $stepIterator);
         }
@@ -212,30 +202,30 @@ class ArrayLoader implements LoaderInterface
     /**
      * Loads step from provided hash.
      *
-     * @param array   $hash Step hash
-     * @param integer $line Step definition line
+     * @param array $hash Step hash
+     * @param int $line Step definition line
      *
      * @return StepNode
      */
     protected function loadStepHash(array $hash, $line = 0)
     {
         $hash = array_merge(
-            array(
+            [
                 'keyword_type' => 'Given',
                 'type' => 'Given',
                 'text' => null,
                 'keyword' => 'Scenario',
                 'line' => $line,
-                'arguments' => array(),
-            ),
+                'arguments' => [],
+            ],
             $hash
         );
 
-        $arguments = array();
+        $arguments = [];
         foreach ($hash['arguments'] as $argumentHash) {
-            if ('table' === $argumentHash['type']) {
+            if ($argumentHash['type'] === 'table') {
                 $arguments[] = $this->loadTableHash($argumentHash['rows']);
-            } elseif ('pystring' === $argumentHash['type']) {
+            } elseif ($argumentHash['type'] === 'pystring') {
                 $arguments[] = $this->loadPyStringHash($argumentHash, $hash['line'] + 1);
             }
         }
@@ -258,16 +248,16 @@ class ArrayLoader implements LoaderInterface
     /**
      * Loads PyString from provided hash.
      *
-     * @param array   $hash PyString hash
-     * @param integer $line
+     * @param array $hash PyString hash
+     * @param int $line
      *
      * @return PyStringNode
      */
     protected function loadPyStringHash(array $hash, $line = 0)
     {
-        $line = isset($hash['line']) ? $hash['line'] : $line;
+        $line = $hash['line'] ?? $line;
 
-        $strings = array();
+        $strings = [];
         foreach (explode("\n", $hash['text']) as $string) {
             $strings[] = $string;
         }
@@ -276,34 +266,31 @@ class ArrayLoader implements LoaderInterface
     }
 
     /**
-     * Checks if examples node is an array
-     * @param $exHash object hash
-     * @return bool
-     */
-    private function examplesAreInArray($exHash)
-    {
-        return isset($exHash[0]);
-    }
-
-    /**
      * Processes cases when examples are in the form of array of arrays
-     * OR in the form of array of objects
+     * OR in the form of array of objects.
      *
-     * @param $exHash array hash
-     * @param $examplesKeyword string
-     * @param $examples array
-     * @return array
+     * @param array $examplesHash
+     * @param string $examplesKeyword
+     *
+     * @return list<ExampleTableNode>
      */
-    private function processExamplesArray($exHash, $examplesKeyword, $examples)
+    private function loadExamplesHash($examplesHash, $examplesKeyword)
     {
-        for ($i = 0; $i < count($exHash); $i++) {
-            if (isset($exHash[$i]['table'])) {
+        if (!isset($examplesHash[0])) {
+            // examples as a single table - create a list with the one element
+            return [new ExampleTableNode($examplesHash, $examplesKeyword)];
+        }
+
+        $examples = [];
+
+        foreach ($examplesHash as $exampleHash) {
+            if (isset($exampleHash['table'])) {
                 // we have examples as objects, hence there could be tags
-                $exHashTags = isset($exHash[$i]['tags']) ? $exHash[$i]['tags'] : array();
-                $examples[] = new ExampleTableNode($exHash[$i]['table'], $examplesKeyword, $exHashTags);
+                $exHashTags = $exampleHash['tags'] ?? [];
+                $examples[] = new ExampleTableNode($exampleHash['table'], $examplesKeyword, $exHashTags);
             } else {
                 // we have examples as arrays
-                $examples[] = new ExampleTableNode($exHash[$i], $examplesKeyword);
+                $examples[] = new ExampleTableNode($exampleHash, $examplesKeyword);
             }
         }
 

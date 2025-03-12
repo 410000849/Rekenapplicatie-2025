@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Behat Gherkin.
+ * This file is part of the Behat Gherkin Parser.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -30,7 +30,7 @@ class OutlineNode implements ScenarioInterface
      */
     private $steps;
     /**
-     * @var ExampleTableNode|ExampleTableNode[]
+     * @var array<array-key, ExampleTableNode>
      */
     private $tables;
     /**
@@ -38,23 +38,23 @@ class OutlineNode implements ScenarioInterface
      */
     private $keyword;
     /**
-     * @var integer
+     * @var int
      */
     private $line;
     /**
-     * @var null|ExampleNode[]
+     * @var ExampleNode[]|null
      */
     private $examples;
 
     /**
      * Initializes outline.
      *
-     * @param null|string      $title
-     * @param string[]         $tags
-     * @param StepNode[]       $steps
-     * @param ExampleTableNode|ExampleTableNode[]  $tables
-     * @param string           $keyword
-     * @param integer          $line
+     * @param string|null $title
+     * @param string[] $tags
+     * @param StepNode[] $steps
+     * @param ExampleTableNode|array<array-key, ExampleTableNode> $tables
+     * @param string $keyword
+     * @param int $line
      */
     public function __construct(
         $title,
@@ -62,22 +62,18 @@ class OutlineNode implements ScenarioInterface
         array $steps,
         $tables,
         $keyword,
-        $line
+        $line,
     ) {
         $this->title = $title;
         $this->tags = $tags;
         $this->steps = $steps;
         $this->keyword = $keyword;
         $this->line = $line;
-        if (!is_array($tables)) {
-           $this->tables = array($tables);
-        } else {
-            $this->tables = $tables;
-        }
+        $this->tables = is_array($tables) ? $tables : [$tables];
     }
 
     /**
-     * Returns node type string
+     * Returns node type string.
      *
      * @return string
      */
@@ -89,7 +85,7 @@ class OutlineNode implements ScenarioInterface
     /**
      * Returns outline title.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTitle()
     {
@@ -115,7 +111,7 @@ class OutlineNode implements ScenarioInterface
      */
     public function hasTags()
     {
-        return 0 < count($this->getTags());
+        return count($this->getTags()) > 0;
     }
 
     /**
@@ -135,7 +131,7 @@ class OutlineNode implements ScenarioInterface
      */
     public function hasSteps()
     {
-        return 0 < count($this->steps);
+        return count($this->steps) > 0;
     }
 
     /**
@@ -155,7 +151,7 @@ class OutlineNode implements ScenarioInterface
      */
     public function hasExamples()
     {
-        return 0 < count($this->tables);
+        return count($this->tables) > 0;
     }
 
     /**
@@ -164,25 +160,29 @@ class OutlineNode implements ScenarioInterface
      * WARNING: it returns a merged table with tags lost.
      *
      * @deprecated use getExampleTables instead
+     *
      * @return ExampleTableNode
      */
     public function getExampleTable()
     {
-        $table = array();
+        $table = [];
         foreach ($this->tables[0]->getTable() as $k => $v) {
             $table[$k] = $v;
         }
 
         /** @var ExampleTableNode $exampleTableNode */
         $exampleTableNode = new ExampleTableNode($table, $this->tables[0]->getKeyword());
-        for ($i = 1; $i < count($this->tables); $i++) {
+        $tableCount = count($this->tables);
+        for ($i = 1; $i < $tableCount; ++$i) {
             $exampleTableNode->mergeRowsFromTable($this->tables[$i]);
         }
+
         return $exampleTableNode;
     }
 
     /**
      * Returns list of examples for the outline.
+     *
      * @return ExampleNode[]
      */
     public function getExamples()
@@ -192,7 +192,8 @@ class OutlineNode implements ScenarioInterface
 
     /**
      * Returns examples tables array for the outline.
-     * @return ExampleTableNode[]
+     *
+     * @return array<array-key, ExampleTableNode>
      */
     public function getExampleTables()
     {
@@ -212,7 +213,7 @@ class OutlineNode implements ScenarioInterface
     /**
      * Returns outline declaration line number.
      *
-     * @return integer
+     * @return int
      */
     public function getLine()
     {
@@ -226,7 +227,7 @@ class OutlineNode implements ScenarioInterface
      */
     protected function createExamples()
     {
-        $examples = array();
+        $examples = [];
 
         foreach ($this->getExampleTables() as $exampleTable) {
             foreach ($exampleTable->getColumnsHash() as $rowNum => $row) {

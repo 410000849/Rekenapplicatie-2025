@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Behat Gherkin.
+ * This file is part of the Behat Gherkin Parser.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -38,8 +38,8 @@ abstract class AbstractFileLoader implements FileLoaderInterface
      */
     protected function findRelativePath($path)
     {
-        if (null !== $this->basePath) {
-            return strtr($path, array($this->basePath . DIRECTORY_SEPARATOR => ''));
+        if ($this->basePath !== null) {
+            return strtr($path, [$this->basePath . DIRECTORY_SEPARATOR => '']);
         }
 
         return $path;
@@ -50,7 +50,7 @@ abstract class AbstractFileLoader implements FileLoaderInterface
      *
      * @param string $path Relative path
      *
-     * @return string
+     * @return false|string
      */
     protected function findAbsolutePath($path)
     {
@@ -58,7 +58,7 @@ abstract class AbstractFileLoader implements FileLoaderInterface
             return realpath($path);
         }
 
-        if (null === $this->basePath) {
+        if ($this->basePath === null) {
             return false;
         }
 
@@ -68,5 +68,18 @@ abstract class AbstractFileLoader implements FileLoaderInterface
         }
 
         return false;
+    }
+
+    /**
+     * @throws \RuntimeException
+     */
+    final protected function getAbsolutePath(string $path): string
+    {
+        $resolvedPath = $this->findAbsolutePath($path);
+        if ($resolvedPath === false) {
+            throw new \RuntimeException("Unable to locate absolute path of \"$path\"");
+        }
+
+        return $resolvedPath;
     }
 }
