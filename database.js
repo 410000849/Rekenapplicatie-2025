@@ -1,12 +1,14 @@
-import config from './config.json' assert { type: 'json' };
 import mysql from 'mysql2';
+import 'dotenv/config'
+
+console.log(process.env.MYSQL_HOST);
 
 // DATABASE LOG-IN
 const pool = mysql.createPool({
-    host: config.MYSQL_HOST,
-    user: config.MYSQL_USER,
-    password: config.MYSQL_PASSWORD,
-    database: config.MYSQL_DATABASE,
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
 }).promise();
 
 // DATABASE FUNCTIONS
