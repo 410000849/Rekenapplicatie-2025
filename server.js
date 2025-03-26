@@ -3,13 +3,17 @@ const app = express();
 
 import document from './public/document.js';
 import account from './APIs/account.js';
+import { fileURLToPath } from 'url';
 import path from 'path';
 
 // DEBUG MODE
 const debug = false;
 
 // CONSTANTS
-const __dirname = import.meta.dirname;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 // SERVE STATIC
 app.use('/assets', express.static(path.join(__dirname, 'public/front-end/assets')));
