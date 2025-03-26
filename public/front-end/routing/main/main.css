@@ -127,12 +127,6 @@ header .left:hover img {
   opacity: 0.7;
 }
 
-#pc-menu span:nth-child(1) { --data-math: "+"; }
-#pc-menu span:nth-child(2) { --data-math: "−"; }
-#pc-menu span:nth-child(3) { --data-math: "×"; }
-#pc-menu span:nth-child(4) { --data-math: "="; }
-#pc-menu span:nth-child(5) { --data-math: "√"; }
-
 #pc-menu span:hover::after {
   content: var(--data-math);
 }
@@ -356,7 +350,7 @@ header.featured #pc-menu span:nth-last-child(2) {
   #pc-menu {
     display: none;
   }
-  
+
   #mobile-menu:target {
     display: flex;
   }
