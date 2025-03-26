@@ -356,7 +356,7 @@ header.featured #pc-menu span:nth-last-child(2) {
   #pc-menu {
     display: none;
   }
-  
+
   #mobile-menu:target {
     display: flex;
   }
