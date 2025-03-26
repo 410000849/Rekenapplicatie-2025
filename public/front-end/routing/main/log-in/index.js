@@ -1,6 +1,7 @@
-const button = document.getElementById('button');
+const login_form = document.getElementById('login-form');
 
-button.addEventListener('click', async () => {
+login_form.addEventListener('submit', async (event) => {
+    event.preventDefault();
     await fetch('account/login', {
         method: 'POST',
         headers: {
