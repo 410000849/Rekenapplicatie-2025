@@ -109,7 +109,7 @@ export default async function({page, locale}) {
 // PAGE ELEMENTS
 async function head(page, locale) {
     var title = (page.charAt(0).toUpperCase() + page.substring(1)).replaceAll('-', ' ') + ' - Rekenapplicatie';
-    var logo = '/assets/logo.webp';
+    var logo = '/assets/logo.png';
 
     return `
     <meta charset="UTF-8">
@@ -118,8 +118,8 @@ async function head(page, locale) {
     <title>${await title}</title>
 
     <link rel="icon" href="${await logo}">
-    <link rel="apple-touch-icon" type="image/webp" href="${await logo}">
-    <link rel="apple-touch-startup-image" type="image/webp" href="${await logo}">
+    <link rel="apple-touch-icon" type="image/png" href="${await logo}">
+    <link rel="apple-touch-startup-image" type="image/png" href="${await logo}">
 
     <meta property="og:title" content="${await title}">
     <meta property="og:image" content="${await logo}">

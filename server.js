@@ -10,7 +10,6 @@ import path from 'path';
 const debug = false;
 
 // CONSTANTS
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
