@@ -1,3 +1,103 @@
-h1 {
-    color: green;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
+:root {
+  --navy: #272551;
+  --orange: #F7913D;
+}
+
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #121218;
+  color: white;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+}
+
+#login-form {
+  background: var(--navy);
+  width: 320px;
+  padding: 30px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+#login-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#login-form input {
+  height: 44px;
+  padding: 0 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 15px;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+#login-form input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 2px rgba(247, 145, 61, 0.2);
+}
+
+/* Knoppen */
+#login-form button {
+  height: 44px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 5px;
+}
+
+/* Log in knop */
+#login-form button[type="submit"] {
+  background: var(--orange);
+  color: white;
+}
+
+#login-form button[type="submit"]:hover {
+  background: #ff9f50;
+  transform: translateY(-2px);
+}
+
+#login-form button[type="button"] {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+#login-form button[type="button"]:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+#login-form button:active {
+  transform: scale(0.98);
 }
