@@ -1,4 +1,4 @@
-import config from './config.json' with { type: 'json' };
+import config from './config.json' assert { type: 'json' };
 import mysql from 'mysql2';
 
 // DATABASE LOG-IN
