@@ -5,127 +5,100 @@
   --orange: #F7913D;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
 
 body {
   font-family: 'Inter', sans-serif;
   background: #121218;
-  display: flex;
+  color: white;
   min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
   flex: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  width: 100%;
   padding: 20px;
-  position: relative;
 }
-
-/* rekenen symbolen achtergrond */
-main::before { content: "+"; position: absolute; top: 8%; left: 8%; color: var(--orange); font-size: 60px; opacity: 0.05; }
-main::after { content: "−"; position: absolute; bottom: 10%; right: 10%; color: var(--navy); font-size: 60px; opacity: 0.05; }
 
 #signup-form {
   background: var(--navy);
-  color: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  width: 100%;
-  max-width: 400px;
+  width: 320px;
   padding: 30px;
-  display: grid;
-  grid-template-columns: 30% 70%;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
   gap: 15px;
-  align-items: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   position: relative;
-  animation: fadeIn 0.5s ease;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+#signup-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
-
-/* Oranje lijn en symbolen */
-#signup-form::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--orange); }
-#signup-form::after { content: "+−×="; position: absolute; top: 7px; right: 18px; color: var(--orange); opacity: 0.5; letter-spacing: 5px; }
 
 #signup-form input {
-  width: 100%;
   height: 44px;
   padding: 0 15px;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 10px;
-  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   color: white;
-  transition: all 0.25s ease;
+  font-size: 15px;
+  width: 100%;
+  transition: all 0.2s ease;
 }
 
 #signup-form input:focus {
   outline: none;
   border-color: var(--orange);
-  box-shadow: 0 0 0 3px rgba(247, 145, 61, 0.2);
+  box-shadow: 0 0 0 2px rgba(247, 145, 61, 0.2);
 }
 
 /* Knoppen */
 #signup-form button {
-  grid-column: span 2;
   height: 44px;
   border: none;
-  border-radius: 10px;
-  font-weight: bold;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  position: relative;
-  transition: all 0.3s ease;
-  overflow: hidden;
+  transition: all 0.2s ease;
+  margin-top: 5px;
 }
 
 /* Sign up knop */
 #signup-form button[type="submit"] {
   background: var(--orange);
   color: white;
-  margin-top: 10px;
 }
 
-/* Login knop - donkere modus */
+#signup-form button[type="submit"]:hover {
+  background: #ff9f50;
+  transform: translateY(-2px);
+}
+
+/* Log in knop */
 #signup-form button[type="button"] {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.1);
   color: white;
-  margin-top: 10px;
 }
 
-/* Symbolen op knoppen met vloeiende animatie */
-#signup-form button::before {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 0;
-  transition: all 0.3s ease;
-}
-
-#signup-form button[type="submit"]::before { content: "+"; }
-#signup-form button[type="button"]::before { content: "="; }
-
-/* Hover states met vloeiende animaties */
-#signup-form button:hover {
-  padding-left: 36px;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-#signup-form button:hover::before {
-  opacity: 1;
+#signup-form button[type="button"]:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 
 #signup-form button:active {
-  transform: translateY(-1px);
-}
-
-
-/* Mobiel */
-@media (max-width: 480px) {
-  #signup-form { padding: 20px; }
+  transform: scale(0.98);
 }
