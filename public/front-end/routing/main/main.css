@@ -58,18 +58,6 @@ header::before {
   z-index: 101;
 }
 
-header::after {
-  content: "+−×=";
-  position: absolute;
-  top: 4px;
-  right: 24px;
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--orange);
-  opacity: 0.5;
-  letter-spacing: 8px;
-}
-
 header .row {
   max-width: 1300px;
   margin: 0 auto;
