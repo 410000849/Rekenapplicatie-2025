@@ -1,41 +1,90 @@
-/* Algemene opmaak voor de Over ons-pagina */
-.over-ons-container {
+/* Algemene layout */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #fdfdfd;
+}
+
+main {
+    padding: 40px 20px;
+}
+
+/* Section 1 */
+#section-1 {
     max-width: 1000px;
-    margin: 50px auto;
-    padding: 20px;
-    font-family: 'Arial', sans-serif;
+    margin: 0 auto 60px auto;
     text-align: center;
 }
 
-.over-ons-container h1 {
-    font-size: 2.5em;
+#section-1 h1 {
+    font-size: 2.8em;
+    color: #2c3e50;
     margin-bottom: 20px;
 }
 
-.over-ons-container p {
-    font-size: 1.2em;
-    line-height: 1.6;
-    color: #333;
-    margin-bottom: 30px;
+#section-1 p {
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: #555;
 }
 
-/* Foto frame styling */
-.foto-frame {
-    border: 8px solid #ccc;
-    padding: 10px;
-    background-color: #f9f9f9;
-    display: inline-block;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 16px;
-    transition: transform 0.3s ease;
+/* Section 2 */
+#section-2 {
+    background-color: #f0f4f8;
+    padding: 60px 20px;
 }
 
-.foto-frame:hover {
-    transform: scale(1.03);
+#section-2 .row {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: center;
+    gap: 40px;
 }
 
-.foto-frame img {
+#section-2 .left {
+    flex: 1;
+    text-align: center;
+}
+
+#section-2 .left img {
     max-width: 100%;
     height: auto;
     border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#section-2 .right {
+    flex: 1;
+}
+
+#section-2 .right h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+#section-2 .right p {
+    font-size: 1.05em;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+#section-2 .right button {
+    padding: 12px 25px;
+    font-size: 1em;
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#section-2 .right button:hover {
+    background-color: #005fa3;
 }
