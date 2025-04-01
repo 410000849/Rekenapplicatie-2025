@@ -15,7 +15,9 @@ body {
   display: flex;
   flex-direction: column;
 }
-
+#login-form span {
+  color: white;
+}
 main {
   flex: 1;
   display: flex;

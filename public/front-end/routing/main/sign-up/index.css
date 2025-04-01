@@ -42,10 +42,9 @@ main {
   position: relative;
 }
 
-#signup-form label {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+#signup-form span {
+  font-size: 14px;
+  color: white;
 }
 
 #signup-form input {
@@ -66,7 +65,58 @@ main {
   box-shadow: 0 0 0 2px rgba(247, 145, 61, 0.2);
 }
 
-/* Knoppen */
+/* Custom checkbox styling */
+#signup-form input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Custom checkbox */
+#signup-form input[type="checkbox"] + label {
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  display: inline-block;
+  color: white;
+  line-height: 20px;
+}
+
+#signup-form input[type="checkbox"] + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+#signup-form input[type="checkbox"]:checked + label:before {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+#signup-form input[type="checkbox"]:checked + label:after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 3px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+#signup-form input[type="checkbox"]:focus + label:before {
+  box-shadow: 0 0 0 2px rgba(247, 145, 61, 0.3);
+}
+
 #signup-form button {
   height: 44px;
   border: none;
@@ -74,7 +124,7 @@ main {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 /* Sign up knop */
