@@ -8,7 +8,7 @@ login_form.addEventListener('submit', async (event) => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            'userId': 123
+            'email': "admin1@example.com"
         })
     }).then(response => response.text()).then(data => {
         console.log(data);
