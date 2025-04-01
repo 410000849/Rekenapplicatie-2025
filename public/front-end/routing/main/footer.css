@@ -2,10 +2,10 @@ footer {
     background: #1d1c3c;
     padding: 40px 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.1);
+    margin-top: auto;
   }
   
-  footer .row {
+  .row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,7 +26,7 @@ footer {
   }
   
   footer img:hover {
-    transform: scale(1.1);
+    transform: scale(1.05) rotate(5deg);
   }
   
   footer nav {
@@ -35,11 +35,12 @@ footer {
   }
   
   footer a {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     font-size: 14px;
     transition: all 0.2s ease;
     position: relative;
+    font-weight: 500;
   }
   
   footer a:after {
