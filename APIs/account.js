@@ -4,12 +4,12 @@ const router = express.Router();
 router.use(express.json());
 
 // DATABASE CONNECTION
-import { test } from '../database.js';
+import { getAccountNote } from '../database.js';
 
 // API ROUTING
 router.post('/login', async (req, res) => {
-    const { userId } = req.body;
-    const response = await test(userId);
+    const { email } = req.body;
+    const response = await getAccountNote(email);
     res.status(200).send(response);
 })
 

@@ -6,7 +6,7 @@ const db = new sqlite3.Database('database.sqlite');
 async function getAccountNote(email) {
     return new Promise((resolve, reject) => {
         db.get(
-            'SELECT * FROM users WHERE email = ?',
+            'SELECT * FROM admin WHERE email = ?',
             [email],
             (err, row) => {
                 if (err) {
@@ -19,14 +19,7 @@ async function getAccountNote(email) {
     });
 }
 
-async function test(userId) {
-    let data = '';
-    if (userId === '123') data = '456';
-    return data;
-}
-
 // EXPORT THE FUNCTIONS
 export {
-    getAccountNote,
-    test
+    getAccountNote
 };
