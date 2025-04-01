@@ -344,3 +344,60 @@ header .accent-container {
 #pc-menu span:active {
   transform: scale(0.95);
 }
+
+
+/* FOOTER */
+footer {
+  background-color: var(--navy-light);
+  color: #ecf0f1;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+footer > .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: 20px;
+}
+
+footer > .row > div:nth-child(1) {
+  display: flex;
+  align-items: center;
+  width: 30%;
+  margin-left: 10px;
+}
+
+footer > .row > div:nth-child(2) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+  width: 30%;
+  margin-right: 10px;
+}
+
+footer img {
+  border-radius: 8px;
+}
+
+/* Navigatie links */
+footer nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+footer nav a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 1em;
+  transition: color 0.3s ease;
+}
+
+footer nav a:hover {
+  color: var(--orange);
+}

@@ -8,9 +8,9 @@ const debug = false;
 export default async function({page, locale}) {
     let _head = await head(page, locale);
     let _css = await css(page, locale);
-    let _header = await header(page, locale);
     let _body = await body(page, locale);
-    let _footer = await footer(page, locale);
+    let _header = await header(page, locale, _body);
+    let _footer = await footer(page, locale, _body);
     let _script = await script(page, locale);
 
     // Filter extra head content from header
@@ -138,7 +138,7 @@ async function header(page, locale) {
 }
 
 async function body(page, locale) {
-    return await fs.promises.readFile(path.join(`public/front-end/routing/${locale}/${page}/index.html`), 'utf-8').catch(error => debug ? console.log(error) : '') || '';
+    return await fs.promises.readFile(path.join(`public/front-end/routing/${locale}/${page}/index.html`), 'utf-8').catch(error => debug ? console.log(error) : '') || await fs.promises.readFile(path.join(`public/front-end/routing/${locale}/page-not-found/index.html`), 'utf-8').catch(error => debug ? console.log(error) : '')
 }
 
 async function footer(page, locale) {
