@@ -251,43 +251,6 @@ header.featured #pc-menu span:nth-last-child(2) {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #121218;
-    color: #F8F8F8;
-  }
-  
-  header {
-    background: var(--navy);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  #pc-menu span {
-    color: #F8F8F8;
-  }
-  
-  #pc-menu span:hover {
-    background: rgba(247, 145, 61, 0.15);
-  }
-  
-  #mobile-menu {
-    background: var(--navy);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  #mobile-menu span {
-    color: #F8F8F8;
-  }
-  
-  #mobile-menu span:hover {
-    background: rgba(247, 145, 61, 0.15);
-  }
-  
-  header::after {
-    opacity: 0.7;
-  }
-}
-
 @media (max-width: 768px) {
   header {
     height: auto;
