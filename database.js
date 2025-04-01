@@ -1,27 +1,27 @@
-import 'dotenv/config'
-
-// DATABASE LOG-IN
-// const pool = mysql.createPool({
-//     host: process.env.MYSQL_HOST,
-//     user: process.env.MYSQL_USER,
-//     password: process.env.MYSQL_PASSWORD,
-//     database: process.env.MYSQL_DATABASE,
-// }).promise();
+import 'dotenv/config';
+import sqlite3 from 'sqlite3';
+const db = new sqlite3.Database('database.sqlite');
 
 // DATABASE FUNCTIONS
 async function getAccountNote(email) {
-    const [rows] = await pool.query(`
-        SELECT *
-        FROM users
-        WHERE email = ?
-    `, [email]);
-
-    return rows[0];
-};
+    return new Promise((resolve, reject) => {
+        db.get(
+            'SELECT * FROM users WHERE email = ?',
+            [email],
+            (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(row);
+                }
+            }
+        );
+    });
+}
 
 async function test(userId) {
     let data = '';
-    if (userId == '123') data = '456';
+    if (userId === '123') data = '456';
     return data;
 }
 
@@ -29,4 +29,4 @@ async function test(userId) {
 export {
     getAccountNote,
     test
-}
+};
