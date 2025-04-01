@@ -42,9 +42,10 @@ main {
   position: relative;
 }
 
-#signup-form span {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+#signup-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 #signup-form input {
@@ -65,12 +66,7 @@ main {
   box-shadow: 0 0 0 2px rgba(247, 145, 61, 0.2);
 }
 
-#signup-form input[type="checkbox"] {
-  width: auto;
-  height: auto;
-  margin: 10px 0;
-}
-
+/* Knoppen */
 #signup-form button {
   height: 44px;
   border: none;
@@ -78,7 +74,7 @@ main {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 /* Sign up knop */

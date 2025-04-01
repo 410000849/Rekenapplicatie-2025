@@ -1,13 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 
-<<<<<<< HEAD
-=======
-:root {
-  --navy: #232440;
-  --orange: #F7913D;
-}
-
->>>>>>> 5d5f3473d6380d3d45d92dd3bdf1b2e6bc8b804c
 * { 
   margin: 0; 
   padding: 0; 
@@ -22,9 +14,6 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-}
-#login-form span {
-  color: white;
 }
 
 main {
@@ -52,7 +41,6 @@ main {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  color: white;
 }
 
 #login-form input {
