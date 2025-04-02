@@ -1,14 +1,36 @@
-
-<link rel="stylesheet" href="index.css">
-<main>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <main>
     <form id="signup-form">
-        <span>Gebruikersnaam: </span><input id="username" type="text">
-        <span>Email: </span><input id="username" type="email">
-        <span>Wachtwoord: </span><input id="password" type="password">
-        <input type="checkbox" id="leerling"><label for="leerling">Leerling</label>
-        <input type="checkbox" id="ouder"><label for="ouder">Ouder</label>
-        <input type="checkbox" id="docent"><label for="docent">Docent</label>
-        <button type="submit">Account aanmaken</button>
-        <button type="button" onclick="document.location = '/log-in'">Inloggen</button>
+      <span>Gebruikersnaam:</span>
+      <input id="username" type="text" required>
+
+      <span>Email:</span>
+      <input id="email" type="email" required>
+
+      <span>Wachtwoord:</span>
+      <input id="password" type="password" required>
+
+      <input type="checkbox" id="leerling">
+      <label for="leerling">Leerling</label>
+
+      <input type="checkbox" id="ouder">
+      <label for="ouder">Ouder</label>
+
+      <input type="checkbox" id="docent">
+      <label for="docent">Docent</label>
+
+      <button type="submit">Account aanmaken</button>
+      <button type="button" onclick="document.location='/log-in'">Inloggen</button>
     </form>
-</main>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
