@@ -27,7 +27,7 @@ signup_form.addEventListener('submit', async (event) => {
 
         if (response.ok) {
             alert('Account aangemaakt!');
-            window.location.href = '/main'; // Verander naar je eigen pagina
+            window.location.href = '/main';
         } else {
             const error = await response.text();
             alert('Fout: ' + error);
