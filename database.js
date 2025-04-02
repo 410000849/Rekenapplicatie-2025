@@ -19,7 +19,24 @@ async function getAccountNote(email) {
     });
 }
 
+async function createAccountNote(naam, email, hash, geboortedatum, table) {
+    return new Promise((resolve, reject) => {
+        db.run(
+            `INSERT INTO ${table} (naam, email, geboortedatum, wachtwoord) VALUES (?, ?, ?, ?)`,
+            [naam, email, geboortedatum, hash],
+            function (err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({ id: this.lastID, naam, email });
+                }
+            }
+        );
+    });
+}
+
 // EXPORT THE FUNCTIONS
 export {
-    getAccountNote
+    getAccountNote,
+    createAccountNote
 };
