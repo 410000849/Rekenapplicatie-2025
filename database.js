@@ -28,7 +28,7 @@ async function createAccountNote(naam, email, hash, geboortedatum, table) {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve({ id: this.lastID, naam, email });
+                    resolve({ id: this.lastID, naam, email, wachtwoord: hash });
                 }
             }
         );

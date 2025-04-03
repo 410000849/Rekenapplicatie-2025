@@ -1,5 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
+import cookieParser from 'cookie-parser';
 const saltRounds = 10;
 
 const router = express.Router();
@@ -24,15 +25,21 @@ router.post('/signup', async (req, res) => {
         
         try {
             if (!response) return res.status(500).send({ message: 'Something went wrong' });
-            const { id, naam, email } = response;
-            if (!id || !naam || !email) return res.status(500).send({ message: 'Something went wrong' });
-            
-            res.status(200).send({ message: 'Successfully created user' });
+            const { id, naam, email, wachtwoord } = response;
+            if (!id || !naam || !email || !wachtwoord) return res.status(500).send({ message: 'Something went wrong' });
+
+            await login(res, table, email, wachtwoord);
         } catch(err) {
             if (!response) return res.status(500).send({ message: 'Something went wrong' });
             console.log('Something went wrong signing up:', err);
         }
     });
 })
+
+async function login(res, table, email, wachtwoord) {
+    if (!res || !email || !wachtwoord) return res.status(500).send({ message: 'Something went wrong' });
+    res.cookie('USER_TOKEN', id, table, { httpOnly: true, secure: true, sameSite: 'Strict' });
+    res.status(200).send({ message: 'Successfully created user' });
+}
 
 export default router;
