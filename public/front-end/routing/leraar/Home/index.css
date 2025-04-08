@@ -19,7 +19,7 @@ main {
   #section-1 .right {
     flex: 1;
     min-width: 280px;
-    background: white;
+    background: rgb(136, 21, 21);
     padding: 24px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-subtle);
