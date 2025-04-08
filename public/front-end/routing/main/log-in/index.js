@@ -3,13 +3,13 @@ const login_form = document.getElementById('login-form');
 login_form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const email = signup_form.querySelector('#email').value;
-    const password = signup_form.querySelector('#password').value;
+    const email = login_form.querySelector('#email').value;
+    const password = login_form.querySelector('#password').value;
     if (!email || !password) return alert('Een of meer velden zijn niet ingevuld');
 
-    const leerlingIsChecked = signup_form.querySelector('#leerling').checked;
-    const ouderIsChecked = signup_form.querySelector('#ouder').checked;
-    const docentIsChecked = signup_form.querySelector('#docent').checked;
+    const leerlingIsChecked = login_form.querySelector('#leerling').checked;
+    const ouderIsChecked = login_form.querySelector('#ouder').checked;
+    const docentIsChecked = login_form.querySelector('#docent').checked;
     const table = leerlingIsChecked ? 'leerling' : ouderIsChecked ? 'ouder' : docentIsChecked ? 'docent' : '';
     if (!table) return alert('Selecteer of u een leerling, ouder of een docent bent');
 
@@ -25,6 +25,9 @@ login_form.addEventListener('submit', async (event) => {
             table
         })
     }).then(response => response.text()).then(data => {
-        console.log(data);
+        const { message } = data;
+        console.log('data:', data);
+        console.log('message:', message);
+        return message ? alert(message) : '';
     })
 })
