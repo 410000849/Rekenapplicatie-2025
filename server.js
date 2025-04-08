@@ -1,9 +1,13 @@
 import express from 'express';
+import cookieParser from 'cookie-parser';
+
 const app = express();
+app.use(cookieParser());
 
 import document from './public/document.js';
 import account from './APIs/account.js';
 import { fileURLToPath } from 'url';
+import { confirmCookie } from './database.js';
 import path from 'path';
 
 // DEBUG MODE
@@ -33,7 +37,19 @@ async function _settings(path) {
 // ROUTING
 app.get('*', async (req, res) => {
     const settings = await _settings(req.path);
-    res.status(200).send(await document(settings));
+
+    if (settings.locale !== 'main') {
+        const cookie = await req.cookies['USER_TOKEN'];
+        if (!cookie || !cookie.includes(':')) return res.status(200).redirect('/sign-up');
+        const [ table, uniqueString ] = cookie.split(':');
+
+        const hasSession = await confirmCookie(table, uniqueString);
+        if (!hasSession) return res.status(200).redirect('/sign-up');
+
+        res.status(200).send(await document(settings));
+    } else {
+        res.status(200).send(await document(settings));
+    }
 })
 
 // LOAD API

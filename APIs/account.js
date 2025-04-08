@@ -7,46 +7,48 @@ const router = express.Router();
 router.use(express.json());
 
 // DATABASE CONNECTION
-import { getAccountNote, createAccountNote, loginAccountNote } from '../database.js';
+import { createAccountNote, loginAccountNote, setCookie } from '../database.js';
 
 // API ROUTING
 router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    const response = await getAccountNote(email);
-    res.status(200).send(response);
+    const { email, password, table } = req.body;
+    if (!email || !password || !table) return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
+    await login(res, table, email, password);
 })
 
 router.post('/signup', async (req, res) => {
     const { username: naam, email, password: wachtwoord, birth_date: geboortedatum, table } = req.body;
-    if (!naam, !email, !wachtwoord, !geboortedatum, !table) return res.status(400).send({ message: 'Something went wrong with your input' });
+    if (!naam || !email || !wachtwoord || !geboortedatum || !table) return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
 
     const unhashedPassword = wachtwoord;
     bcrypt.hash(wachtwoord, saltRounds, async function (err, hash) {
         const response = await createAccountNote(naam, email, hash, geboortedatum, table);
         
         try {
-            if (!response) return res.status(500).send({ message: 'Something went wrong' });
+            if (!response) return res.status(500).send({ message: 'Er ging iets verkeerd' });
             const { id, naam, email, wachtwoord } = response;
-            if (!id || !naam || !email || !wachtwoord) return res.status(500).send({ message: 'Something went wrong' });
+            if (!id || !naam || !email || !wachtwoord) return res.status(500).send({ message: 'Er ging iets verkeerd' });
 
             await login(res, table, email, unhashedPassword);
         } catch(err) {
-            if (!response) return res.status(500).send({ message: 'Something went wrong' });
-            console.log('Something went wrong signing up:', err);
+            if (!response) return res.status(500).send({ message: 'Er ging iets verkeerd' });
+            console.log('Er ging iets verkeerd tijdens het signing up:', err);
         }
     });
 })
 
 async function login(res, table, email, wachtwoord) {
-    if (!res || !email || !wachtwoord) return res.status(500).send({ message: 'Something went wrong' });
+    if (!res || !email || !wachtwoord || !table) return res.status(500).send({ message: 'Er ging iets verkeerd' });
 
-    // ATTEMPT LOGIN
+    // INPUT CHECK
     const response = await loginAccountNote(email, wachtwoord, table);
     if (!response) return res.status(400).send({ message: 'Gebruikersnaam of wachtwoord is incorrect' });
 
     // LOGIN SUCCESS
     const uniqueString = await crypto.randomBytes(100).toString('hex');
-    res.cookie('USER_TOKEN', `${table}:${uniqueString}`, { httpOnly: true, secure: true, sameSite: 'Strict' });
+    const cookie_response = await setCookie(table, email, uniqueString, res);
+    if (!cookie_response) return res.status(500).send({ message: 'Er ging iets verkeerd' });
+
     res.status(200).send({ message: 'Successfully created user' });
 }
 

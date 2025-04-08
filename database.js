@@ -52,9 +52,32 @@ async function loginAccountNote(email, wachtwoord, table) {
     });
 }
 
+async function setCookie(table, email, uniqueString, res) {
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE ${table} SET cookie = ? WHERE email = ?`, [uniqueString, email], function (err) {
+            if (err) return reject(err);
+
+            res.cookie('USER_TOKEN', `${table}:${uniqueString}`, { httpOnly: true, secure: true, sameSite: 'Strict' });
+            resolve(true);
+        });
+    });
+}
+
+async function confirmCookie(table, uniqueString) {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT naam FROM ${table} WHERE cookie = ?`, [uniqueString], (err, row) => {
+            if (err) return reject(err);
+            resolve(row || false);
+        });
+    });
+}
+
+
 // EXPORT THE FUNCTIONS
 export {
     getAccountNote,
     createAccountNote,
-    loginAccountNote
+    loginAccountNote,
+    setCookie,
+    confirmCookie
 };
