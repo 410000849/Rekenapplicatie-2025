@@ -1,27 +1,52 @@
-<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="main.css">
 
-<section id="opdrachten">
-    <h2>Opdrachten</h2>
-    <div class="opdrachten-lijst">
-        <div class="opdracht-kaart">
-            <h3>Template opdracht 1</h3>
-            <p>Beschrijving van deze opdracht komt hier te staan.</p>
-            <button>Start opdracht</button>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leerlingenportaal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Rooster</a></li>
+        <li><a href="#">Vakken</a></li>
+        <li><a href="#">Berichten</a></li>
+        <li><a href="#">Instellingen</a></li>
+      </ul>
+    </aside>
+    <main class="content">
+      <header>
+        <h1>Welkom, leerling!</h1>
+        <p>Vandaag is het <span id="date"></span></p>
+      </header>
+
+      <section class="dashboard">
+        <div class="card">
+          <h3>Rooster</h3>
+          <p>Bekijk je lessen van vandaag.</p>
         </div>
-        <div class="opdracht-kaart">
-            <h3>Template opdracht 2</h3>
-            <p>Beschrijving van deze opdracht komt hier te staan.</p>
-            <button>Start opdracht</button>
+        <div class="card">
+          <h3>Toetsen</h3>
+          <p>Je hebt binnenkort een wiskundetoets!</p>
         </div>
-        <div class="opdracht-kaart">
-            <h3>Template opdracht 3</h3>
-            <p>Beschrijving van deze opdracht komt hier te staan.</p>
-            <button>Start opdracht</button>
+        <div class="card">
+          <h3>Berichten</h3>
+          <p>2 nieuwe berichten van docenten.</p>
         </div>
-        <div class="opdracht-kaart">
-            <h3>Template opdracht 4</h3>
-            <p>Beschrijving van deze opdracht komt hier te staan.</p>
-            <button>Start opdracht</button>
-        </div>
-    </div>
-</section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleDateString("nl-NL", {
+      weekday: "long", year: "numeric", month: "long", day: "numeric"
+    });
+  </script>
+</body>
+</html>
