@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekenspel</title> <!-- Terug naar neutraler -->
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../main.css"> <!-- Link to common CSS -->
+    <link rel="js   " href="index.js"> <!-- Link to common CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Nieuw lettertype: Space Grotesk -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header placeholder to load common header -->
+    <div id="common-header-placeholder"></div>
+
+    <main class="game-area">
+        <div class="game-container">
+            <div id="difficulty-selector" class="selector-container">
+                 <h2>Kies moeilijkheidsgraad</h2> <!-- Formeler -->
+                 <!-- Knoppen krijgen nu .btn class -->
+                 <button class="btn difficulty-btn" data-difficulty="easy">Makkelijk</button>
+                 <button class="btn difficulty-btn" data-difficulty="medium">Gemiddeld</button>
+                 <button class="btn difficulty-btn" data-difficulty="hard">Moeilijk</button>
+            </div>
+
+            <div id="game-content" style="display: none;">
+                <div class="game-status">
+                     <p id="round-counter">Ronde: <span id="round-value">0</span> / 25</p>
+                     <p id="timer">Tijd: <span id="timer-value">--</span></p>
+                </div>
+
+                <div id="problem-container">
+                    <p id="problem-text">Hier komt de som...</p>
+                </div>
+
+                <div id="choice-container" class="choice-buttons" style="display: none;">
+                    <button id="choice-a" class="btn choice-btn"></button>
+                    <button id="choice-b" class="btn choice-btn"></button>
+                    <button id="choice-c" class="btn choice-btn"></button>
+                    <button id="choice-d" class="btn choice-btn" style="display: none;"></button>
+                    <button id="choice-e" class="btn choice-btn" style="display: none;"></button>
+                </div>
+                 <p id="feedback">
+                     <img id="feedback-img-success" src="image.png" alt="Goed gedaan!" class="feedback-image">
+                     <img id="feedback-img-error" src="fout.png" alt="Helaas!" class="feedback-image">
+                     <span id="feedback-text"></span>
+                 </p>
+                 <p id="score">Score: <span id="score-value">0</span></p>
+            </div>
+
+             <div id="end-screen" style="display: none;">
+                 <h2>Spel Voltooid</h2> <!-- Formeler -->
+                 <p>Eindscore: <strong id="final-score">0</strong></p>
+                 <button id="restart-btn" class="btn restart-button">Opnieuw Spelen</button>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
