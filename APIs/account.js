@@ -49,7 +49,7 @@ async function login(res, table, email, wachtwoord) {
     const cookie_response = await setCookie(table, email, uniqueString, res);
     if (!cookie_response) return res.status(500).send({ message: 'Er ging iets verkeerd' });
 
-    res.status(200).send({ message: 'Successfully created user' });
+    res.status(200).send({ message: 'Log in successvol' });
 }
 
 export default router;

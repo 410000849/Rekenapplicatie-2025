@@ -12,7 +12,8 @@ signup_form.addEventListener('submit', async (event) => {
     const leerlingIsChecked = signup_form.querySelector('#leerling').checked;
     const ouderIsChecked = signup_form.querySelector('#ouder').checked;
     const docentIsChecked = signup_form.querySelector('#docent').checked;
-    const table = leerlingIsChecked ? 'leerling' : ouderIsChecked ? 'ouder' : docentIsChecked ? 'docent' : '';
+    const adminIsChecked = signup_form.querySelector('#admin').checked;
+    const table = leerlingIsChecked ? 'leerling' : ouderIsChecked ? 'ouder' : docentIsChecked ? 'docent' : adminIsChecked ? 'admin' : '';
     if (!table) return alert('Selecteer of u een leerling, ouder of een docent bent');
 
     await fetch('account/signup', {
@@ -29,8 +30,8 @@ signup_form.addEventListener('submit', async (event) => {
         })
     }).then(response => response.json()).then(data => {
         const { message } = data;
-        console.log('data:', data);
-        console.log('message:', message);
+        if (!data?.message) return;
+        if (message.includes('successvol')) document.location.href = `/${table}/home`;
         return message ? alert(message) : '';
     })
 })

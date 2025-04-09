@@ -10,7 +10,8 @@ login_form.addEventListener('submit', async (event) => {
     const leerlingIsChecked = login_form.querySelector('#leerling').checked;
     const ouderIsChecked = login_form.querySelector('#ouder').checked;
     const docentIsChecked = login_form.querySelector('#docent').checked;
-    const table = leerlingIsChecked ? 'leerling' : ouderIsChecked ? 'ouder' : docentIsChecked ? 'docent' : '';
+    const adminIsChecked = login_form.querySelector('#admin').checked;
+    const table = leerlingIsChecked ? 'leerling' : ouderIsChecked ? 'ouder' : docentIsChecked ? 'docent' : adminIsChecked ? 'admin' : '';
     if (!table) return alert('Selecteer of u een leerling, ouder of een docent bent');
 
 
@@ -24,10 +25,10 @@ login_form.addEventListener('submit', async (event) => {
             password,
             table
         })
-    }).then(response => response.text()).then(data => {
+    }).then(response => response.json()).then(data => {
         const { message } = data;
-        console.log('data:', data);
-        console.log('message:', message);
+        if (!data?.message) return;
+        if (message.includes('successvol')) document.location.href = `/${table}/home`;
         return message ? alert(message) : '';
     })
 })
