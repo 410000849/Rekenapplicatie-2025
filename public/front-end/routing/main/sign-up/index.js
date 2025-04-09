@@ -32,6 +32,5 @@ signup_form.addEventListener('submit', async (event) => {
         const { message } = data;
         if (!data?.message) return;
         if (message.includes('successvol')) document.location.href = `/${table}/home`;
-        return message ? alert(message) : '';
     })
 })

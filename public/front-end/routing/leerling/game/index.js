@@ -12,8 +12,8 @@ let timePerQuestion = 10; // Hardcoded to 10 seconds per question
 let remainingTime = 0;
 
 // Image paths
-const happyImage = "image.png"; // Replace with your actual image
-const sadImage = "fout.png";    // Replace with your actual image
+const happyImage = "/assets/image.png"; // Replace with your actual image
+const sadImage = "/assets/fout.png";    // Replace with your actual image
 
 // Timing settings for different levels (in milliseconds)
 const levelSettings = {

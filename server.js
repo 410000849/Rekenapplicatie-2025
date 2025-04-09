@@ -41,13 +41,21 @@ app.get('*', async (req, res) => {
     if (settings.locale !== 'main') {
         const cookie = await req.cookies['USER_TOKEN'];
         if (!cookie || !cookie.includes(':')) return res.status(200).redirect('/sign-up');
-        const [ table, uniqueString ] = cookie.split(':');
+        const [table, uniqueString] = cookie.split(':');
 
         const hasSession = await confirmCookie(table, uniqueString);
         if (!hasSession) return res.status(200).redirect('/sign-up');
 
         res.status(200).send(await document(settings));
     } else {
+        if (settings.page == 'sign-up' || settings.page == 'log-in') {
+            const cookie = await req.cookies['USER_TOKEN'];
+            if (cookie && cookie.includes(':')) {
+                const table = cookie.split(':')[0];
+                return res.status(200).redirect(`/${table}/home`);
+            }
+        }
+
         res.status(200).send(await document(settings));
     }
 })

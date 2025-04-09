@@ -103,7 +103,7 @@ export default async function({page, locale}) {
     ${_body}
     ${_footer}</body>
     <script>${_script}</script>
-    `.trim().replace(/\s+/g, ' ');
+    `;
 }
 
 // PAGE ELEMENTS
