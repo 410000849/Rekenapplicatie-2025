@@ -46,7 +46,7 @@ app.get('*', async (req, res) => {
         const hasSession = await confirmCookie(table, uniqueString);
         if (!hasSession) return res.status(200).redirect('/sign-up');
 
-        res.status(200).send(await document(settings));
+        res.status(200).send(await document({ page: settings.page, locale: table }));
     } else {
         if (settings.page == 'sign-up' || settings.page == 'log-in') {
             const cookie = await req.cookies['USER_TOKEN'];
