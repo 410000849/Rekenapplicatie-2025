@@ -1,6 +1,18 @@
 <section id="groep">
-    <h2>Groep 8 - Jouw klas</h2>
-    <ul class="groep-lijst">
+    <h2 id="groepnaam">Join een groep</h2>
+
+    <form id="create-form">
+        <span>Groep naam: </span><input id="groep-naam" type="number">
+        <span>Groep type: </span><input id="groep-type" type="number">
+        <button type="submit">Maak groep</button>
+    </form>
+
+    <form id="join-form">
+        <span>Groep id: </span><input id="groep-id" type="number">
+        <button type="submit">Join groep</button>
+    </form>
+
+    <ul style="display: none;" class="groep-lijst">
         <li>
             <img src="https://via.placeholder.com/48" alt="Profielfoto meester Bas">
             <div>

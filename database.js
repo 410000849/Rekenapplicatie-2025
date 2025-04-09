@@ -72,6 +72,15 @@ async function confirmCookie(table, uniqueString) {
     });
 }
 
+async function createGroupNote(naam, type) {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT naam FROM ${table} WHERE cookie = ?`, [uniqueString], (err, row) => {
+            if (err) return reject(err);
+            resolve(row || false);
+        });
+    });
+}
+
 
 // EXPORT THE FUNCTIONS
 export {
@@ -79,5 +88,6 @@ export {
     createAccountNote,
     loginAccountNote,
     setCookie,
-    confirmCookie
+    confirmCookie,
+    createGroupNote
 };

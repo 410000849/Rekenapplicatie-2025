@@ -5,10 +5,12 @@ const app = express();
 app.use(cookieParser());
 
 import document from './public/document.js';
-import account from './APIs/account.js';
 import { fileURLToPath } from 'url';
 import { confirmCookie } from './database.js';
 import path from 'path';
+
+import account from './APIs/account.js';
+import groep from './APIs/groep.js';
 
 // DEBUG MODE
 const debug = false;
@@ -63,6 +65,7 @@ app.get('*', async (req, res) => {
 
 // LOAD API
 app.use('/account', account)
+app.use('/groep', groep)
 
 const PORT = 300;
 app.listen(PORT, () => {
