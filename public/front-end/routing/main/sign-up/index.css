@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
+:root {
+  --navy: #272551;
+  --orange: #F7913D;
+}
+
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #121218;
+  color: white;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+}
+
+#signup-form {
+  background: var(--navy);
+  width: 320px;
+  padding: 30px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+#signup-form span {
+  font-size: 14px;
+  color: white;
+}
+
+#signup-form input {
+  height: 44px;
+  padding: 0 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 15px;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+#signup-form input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 2px rgba(247, 145, 61, 0.2);
+}
+
+/* Custom checkbox styling */
+#signup-form input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Custom checkbox */
+#signup-form input[type="checkbox"] + label {
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  display: inline-block;
+  color: white;
+  line-height: 20px;
+}
+
+#signup-form input[type="checkbox"] + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+#signup-form input[type="checkbox"]:checked + label:before {
+  background: var(--orange);
+  border-color: var(--orange);
+}
+
+#signup-form input[type="checkbox"]:checked + label:after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 3px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+#signup-form input[type="checkbox"]:focus + label:before {
+  box-shadow: 0 0 0 2px rgba(247, 145, 61, 0.3);
+}
+
+#signup-form button {
+  height: 44px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+/* Sign up knop */
+#signup-form button[type="submit"] {
+  background: var(--orange);
+  color: white;
+}
+
+#signup-form button[type="submit"]:hover {
+  background: #ff9f50;
+  transform: translateY(-2px);
+}
+
+/* Log in knop */
+#signup-form button[type="button"] {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+#signup-form button[type="button"]:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+#signup-form button:active {
+  transform: scale(0.98);
+}
