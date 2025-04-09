@@ -29,6 +29,8 @@ signup_form.addEventListener('submit', async (event) => {
         })
     }).then(response => response.json()).then(data => {
         const { message } = data;
-        return alert(message);
+        console.log('data:', data);
+        console.log('message:', message);
+        return message ? alert(message) : '';
     })
 })

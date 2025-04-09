@@ -1,8 +1,11 @@
 <link rel="stylesheet" href="index.css">
 <main>
     <form id="login-form">
-        <span>Gebruikersnaam: </span><input id="username" type="text">
+        <span>Email: </span><input id="email" type="email">
         <span>Wachtwoord: </span><input id="password" type="password">
+        <input type="checkbox" id="leerling"><label for="leerling">Leerling</label>
+        <input type="checkbox" id="ouder"><label for="ouder">Ouder</label>
+        <input type="checkbox" id="docent"><label for="docent">Docent</label>
         <button type="submit">Inloggen</button>
         <button type="button" onclick="document.location = '/sign-up'">Account aanmaken</button>
     </form>

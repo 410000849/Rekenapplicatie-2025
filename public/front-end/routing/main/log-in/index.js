@@ -2,15 +2,32 @@ const login_form = document.getElementById('login-form');
 
 login_form.addEventListener('submit', async (event) => {
     event.preventDefault();
+
+    const email = login_form.querySelector('#email').value;
+    const password = login_form.querySelector('#password').value;
+    if (!email || !password) return alert('Een of meer velden zijn niet ingevuld');
+
+    const leerlingIsChecked = login_form.querySelector('#leerling').checked;
+    const ouderIsChecked = login_form.querySelector('#ouder').checked;
+    const docentIsChecked = login_form.querySelector('#docent').checked;
+    const table = leerlingIsChecked ? 'leerling' : ouderIsChecked ? 'ouder' : docentIsChecked ? 'docent' : '';
+    if (!table) return alert('Selecteer of u een leerling, ouder of een docent bent');
+
+
     await fetch('account/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            'email': "admin1@example.com"
+            email,
+            password,
+            table
         })
     }).then(response => response.text()).then(data => {
-        console.log(data);
+        const { message } = data;
+        console.log('data:', data);
+        console.log('message:', message);
+        return message ? alert(message) : '';
     })
 })
