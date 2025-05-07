@@ -5,7 +5,7 @@ let correctAnswer = null;
 let options = [];
 let gameRunning = false;
 let currentQuestionIndex = 0;
-let totalQuestions = 10; // Hardcoded to 10 questions
+let totalQuestions = 5; // Hardcoded to 10 questions
 let correctAnswers = 0;
 let timerInterval = null;
 let timePerQuestion = 10; // Hardcoded to 10 seconds per question
@@ -273,27 +273,7 @@ function startRound() {
     showOptions();
 }
 
-// Start the game
-function startGame() {
-    gameRunning = true;
-    score = 0;
-    currentQuestionIndex = 0;
-    correctAnswers = 0;
-    scoreElement.textContent = score;
-    
-    // Hide result container if visible
-    resultContainer.style.display = 'none';
-    
-    // Reset character position
-    character.classList.remove('fly-away');
-    
-    // Disable start button and level buttons
-    startBtn.setAttribute('disabled', true);
-    levelBtns.forEach(btn => btn.setAttribute('disabled', true));
-    
-    startRound();
-}
-
+/// End the game
 // End the game
 function endGame() {
     gameRunning = false;
@@ -308,31 +288,92 @@ function endGame() {
     totalQuestionsElement.textContent = totalQuestions;
     resultContainer.style.display = 'block';
     
-    // Show happy or sad image based on score
+    // Show happy or sad image based on score with better sizing
     const passScore = totalQuestions * 5; // 50% correct
     if (score >= passScore) {
-        resultFeedback.innerHTML = `<img src="${happyImage}" alt="Goed gedaan">`;
+        resultFeedback.innerHTML = `<img src="${happyImage}" alt="Goed gedaan" style="max-width: 100px; height: auto;">`;
         // Make character fly away when successful
         setTimeout(() => {
             character.classList.add('fly-away');
         }, 1000);
     } else {
-        resultFeedback.innerHTML = `<img src="${sadImage}" alt="Volgende keer beter">`;
+        resultFeedback.innerHTML = `<img src="${sadImage}" alt="Volgende keer beter" style="max-width: 100px; height: auto;">`;
     }
     
-    // Reset game container
-    problemContainer.textContent = 'Klik op Start om te beginnen!';
-    optionA.style.opacity = 0;
-    optionB.style.opacity = 0;
-    optionC.style.opacity = 0;
-    answerButtons.style.display = 'none';
-    feedbackElement.innerHTML = '';
-    stopTimer();
+    // Hide ALL game elements from the start screen
+    document.querySelector('.game-container').style.display = 'none';
+    
+    // Add "Terug naar home" button next to "Play again" button
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.justifyContent = 'center';
+    buttonContainer.style.gap = '15px';
+    buttonContainer.style.marginTop = '20px';
+    
+    // Create home button with same styling
+    const homeBtn = document.createElement('button');
+    homeBtn.textContent = 'Terug naar home';
+    homeBtn.classList.add('btn', 'btn-primary'); // Add same classes as playAgainBtn
+    
+    // Copy styling from playAgainBtn
+    homeBtn.style.backgroundColor = '#f2ae30';
+    homeBtn.style.color = 'white';
+    homeBtn.style.padding = '10px 20px';
+    homeBtn.style.borderRadius = '5px';
+    homeBtn.style.border = 'none';
+    homeBtn.style.cursor = 'pointer';
+    homeBtn.style.fontWeight = 'bold';
+    
+    // Add event listener to navigate to home
+    homeBtn.addEventListener('click', () => {
+        window.location.href = '/leerling/home';
+    });
+    
+    // Replace the existing play again button with our container
+    if (playAgainBtn.parentNode) {
+        // Put both buttons in the container
+        buttonContainer.appendChild(playAgainBtn.cloneNode(true));
+        buttonContainer.appendChild(homeBtn);
+        
+        // Replace the original button with our container
+        playAgainBtn.parentNode.replaceChild(buttonContainer, playAgainBtn);
+        
+        // Re-add event listener to the cloned play again button
+        buttonContainer.firstChild.addEventListener('click', startGame);
+    }
     
     // Show fireworks if score is good
     if (score >= totalQuestions * 7) { // 70% correct
         showFireworks();
     }
+}
+
+
+
+// Start the game
+function startGame() {
+    gameRunning = true;
+    score = 0;
+    currentQuestionIndex = 0;
+    correctAnswers = 0;
+    scoreElement.textContent = score;
+    
+    // Show game container
+    document.querySelector('.game-container').style.display = 'block';
+    // Hide result container
+    resultContainer.style.display = 'none';
+    
+    // Reset character position
+    character.classList.remove('fly-away');
+    
+    // Disable start button and level buttons
+    startBtn.setAttribute('disabled', true);
+    levelBtns.forEach(btn => btn.setAttribute('disabled', true));
+    
+    // Reset problem container display
+    problemContainer.style.display = 'block';
+    
+    startRound();
 }
 
 // Show fireworks animation
