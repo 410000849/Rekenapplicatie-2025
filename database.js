@@ -22,6 +22,55 @@ async function getAccountNote(email) {
     });
 }
 
+function getAccountNoteByCookie(cookie) {
+    return new Promise((resolve, reject) => {
+        const tables = ['admin', 'docent', 'ouder', 'leerling'];
+
+        let index = 0;
+
+        function checkNextTable() {
+            if (index >= tables.length) return resolve(null);
+
+            const table = tables[index];
+            db.get(`SELECT *, ? as table_name FROM ${table} WHERE cookie = ?`, [table, cookie], (err, row) => {
+                if (err) return reject(err);
+                if (row) return resolve(row);
+
+                index++;
+                checkNextTable();
+            });
+        }
+
+        checkNextTable();
+    });
+}
+
+function getAllGroupMembers(group_id) {
+    return new Promise((resolve, reject) => {
+        const tables = ['admin', 'docent', 'ouder', 'leerling'];
+        const results = [];
+        let completed = 0;
+
+        tables.forEach(table => {
+            db.all(
+                `SELECT *, ? AS table_name FROM ${table} WHERE "groep id" = ?`,
+                [table, group_id],
+                (err, rows) => {
+                    if (err) return reject(err);
+                    if (rows && rows.length > 0) {
+                        results.push(...rows);
+                    }
+
+                    completed++;
+                    if (completed === tables.length) {
+                        resolve(results);
+                    }
+                }
+            );
+        });
+    });
+}
+
 async function createAccountNote(naam, email, hash, geboortedatum, table) {
     return new Promise((resolve, reject) => {
         db.run(
@@ -65,6 +114,15 @@ async function setCookie(table, email, uniqueString, res) {
     });
 }
 
+async function addGroupIdToAccount(table, email, id) {
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE ${table} SET \`groep id\` = ? WHERE email = ?`, [id, email], function (err) {
+            if (err) return reject(err);
+            resolve(true);
+        });
+    });
+}
+
 async function confirmCookie(table, uniqueString) {
     return new Promise((resolve, reject) => {
         db.get(`SELECT naam FROM ${table} WHERE cookie = ?`, [uniqueString], (err, row) => {
@@ -92,5 +150,8 @@ export {
     loginAccountNote,
     setCookie,
     confirmCookie,
-    createGroupNote
+    createGroupNote,
+    getAccountNoteByCookie,
+    addGroupIdToAccount,
+    getAllGroupMembers
 };
