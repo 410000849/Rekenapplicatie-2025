@@ -403,7 +403,7 @@ footer nav a:hover {
 }
 
 .logout-button {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
   background-color: #ff4d4d;
