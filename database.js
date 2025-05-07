@@ -3,6 +3,8 @@ import sqlite3 from 'sqlite3';
 import bcrypt from 'bcrypt';
 const db = new sqlite3.Database('database.sqlite');
 
+db.serialize();
+
 // DATABASE FUNCTIONS
 async function getAccountNote(email) {
     return new Promise((resolve, reject) => {
@@ -74,10 +76,11 @@ async function confirmCookie(table, uniqueString) {
 
 async function createGroupNote(naam, type) {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT naam FROM ${table} WHERE cookie = ?`, [uniqueString], (err, row) => {
-            if (err) return reject(err);
-            resolve(row || false);
-        });
+        db.run(`INSERT INTO groep (naam, type) VALUES (?, ?)`, [naam, type], function(err) {
+                if (err) return reject(err);
+                resolve({ id: this.lastID });
+            }
+        );        
     });
 }
 

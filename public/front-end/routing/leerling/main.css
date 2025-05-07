@@ -401,3 +401,21 @@ footer nav a {
 footer nav a:hover {
   color: var(--orange);
 }
+
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.logout-button:hover {
+  background-color: #e60000;
+}

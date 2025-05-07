@@ -9,8 +9,11 @@ import { createGroupNote } from '../database.js';
 // API ROUTING
 router.post('/create', async (req, res) => {
     const { naam, type } = req.body;
-    if (!id || !naam || !type) return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
-    const response = await createGroupNote(id, naam, type);
+    console.log('Called create with:', naam, type);
+    
+    if (!naam || !type) return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
+    const response = await createGroupNote(naam, type);
+    const { id } = response;
     console.log(response);
 })
 
