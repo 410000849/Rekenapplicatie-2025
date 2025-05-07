@@ -28,9 +28,10 @@ signup_form.addEventListener('submit', async (event) => {
             birth_date,
             table
         })
-    }).then(response => response.json()).then(data => {
+    }).then(response => response.json()).then(async data => {
         const { message } = data;
-        if (!data?.message) return;
+        if (!data?.message) return await alert('Er ging iets mis tijdens het inloggen');
         if (message.includes('successvol')) document.location.href = `/${table}/home`;
+        else if (message.includes('incorrect')) return alert (data.message);
     })
 })
