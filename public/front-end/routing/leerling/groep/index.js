@@ -7,7 +7,7 @@ join_form.addEventListener('submit', async (event) => {
     const groep_id = join_form.getElementById('groep-id');
     if (!groep_id) return alert('Geen groep ingevuld');
     
-    await fetch('groep/join', {
+    await fetch('/groep/join', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -25,18 +25,18 @@ join_form.addEventListener('submit', async (event) => {
 create_form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const groep_naam = create_form.getElementById('groep-naam');
-    const groep_type = create_form.getElementById('groep-type');
-    if (!groep_naam || !groep_type) return alert('Een of meer velden zijn niet ingevuld');
-    
-    await fetch('groep/create', {
+    const groep_naam = document.getElementById('groep-naam');
+    const groep_type = document.getElementById('groep-type');
+    if (!groep_naam?.value || !groep_type?.value) return alert('Een of meer velden zijn niet ingevuld');
+
+    await fetch('/groep/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            naam: groep_naam,
-            type: groep_type
+            naam: groep_naam.value,
+            type: groep_type.value
         })
     }).then(response => response.json()).then(data => {
         const { message } = data;
