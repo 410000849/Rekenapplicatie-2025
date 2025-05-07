@@ -403,7 +403,7 @@ footer nav a:hover {
 }
 
 .logout-button {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
   background-color: #ff4d4d;
@@ -418,20 +418,4 @@ footer nav a:hover {
 
 .logout-button:hover {
   background-color: #e60000;
-}
-
-/* Smaller screens (tablets) */
-@media (max-width: 768px) {
-  .logout-button {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-}
-
-/* Very small screens (phones) */
-@media (max-width: 480px) {
-  .logout-button {
-    padding: 6px 10px;
-    font-size: 10px;
-  }
 }
