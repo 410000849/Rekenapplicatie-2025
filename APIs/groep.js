@@ -6,7 +6,7 @@ router.use(express.json());
 router.use(cookieParser());
 
 // DATABASE CONNECTION
-import { createGroupNote, getAccountNoteByCookie, addGroupIdToAccount, getAllGroupMembers } from '../database.js';
+import { createGroupNote, getAccountNoteByCookie, addGroupIdToAccount, getAllGroupMembers, leaveGroup } from '../database.js';
 
 // FUNCTIONS
 async function joinGroep(id, cookie) {
@@ -42,6 +42,17 @@ router.post('/join', async (req, res) => {
     return res.status(200).send({ message: 'Groep met success gejoint' });
 })
 
+router.post('/leave', async (req, res) => {
+    const [ table, cookie ] = req?.cookies?.['USER_TOKEN'].split(':');
+    if (!table || !cookie) return res.status(400).send({ success: false, message: 'No active session found' });
+    const { email } = await getAccountNoteByCookie(cookie);
+    if (!email) return res.status(500).send({ success: false, message: 'Something went wrong' });
+    
+    const status = await leaveGroup(table, email)
+    if (status == true) return res.status(200).send({ success: true, message: 'Successfully left group' });
+    res.status(500).send({ success: false, message: 'Something went wrong' });
+})
+
 router.get('/current', async (req, res) => {
     const cookie = req.cookies['USER_TOKEN'].split(':')[1];
     if (!cookie) return res.status(400).send({ success: false, message: "No active cookie found" });
@@ -53,7 +64,10 @@ router.get('/current', async (req, res) => {
     const allMembers = await getAllGroupMembers(group_id);
     if (!allMembers) return res.status(500).send({ success: false, message: "Something went wrong" });
 
-    const group_members = allMembers.map(member => member.naam);
+    const group_members = allMembers.map(member => {
+        return { naam: member.naam, rol: member.table_name };
+    });
+
     return res.status(200).send({ success: true, group_id, group_members });
 })
 
