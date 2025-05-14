@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekenspel Kaartjes</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="header">
+        <h1>REKENSPEL MET KAARTJES</h1>
+    </div>
+    
+    <!-- Start screen -->
+    <div class="start-screen" id="start-screen">
+        <div class="start-content">
+            <h2>Welkom bij het rekenspel met kaartjes!</h2>
+            <p>Kies kaartjes die samen optellen tot het doelbedrag.</p>
+            
+            <div class="level-container">
+                <button class="level-btn active" data-level="easy">Makkelijk</button>
+                <button class="level-btn" data-level="medium">Gemiddeld</button>
+                <button class="level-btn" data-level="hard">Moeilijk</button>
+            </div>
+            
+            <div class="mascot">
+                <img src="/assets/mascotte.png" alt="">
+            </div>
+            
+            <button class="btn" id="start-game-btn">Start Spel</button>
+        </div>
+    </div>
+    
+    <!-- Game container -->
+    <div class="game-container" id="game-container" style="display: none;">
+        <div class="target-container">
+            <h2>Doel: <span id="target-number">0</span></h2>
+        </div>
+        
+        <div class="timer-container" style="display: none;">
+            <div>Tijd: <span id="timer-value">30</span>s</div>
+            <div class="timer-bar">
+                <div class="timer-fill"></div>
+            </div>
+        </div>
+        
+        <div class="cards-container" id="cards-container">
+            <!-- Cards will be generated here -->
+        </div>
+        
+        <div class="selected-container">
+            <h3>Geselecteerde kaarten:</h3>
+            <div id="selected-cards" class="selected-cards"></div>
+            <div class="selection-info">
+                <span>Som: <span id="current-sum">0</span></span>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <div class="lootbox">
+            <img src="/assets/kist.png" alt="Lootbox">
+        </div>
+        
+        <div class="score-container">
+            Score: <span id="score">0</span>
+        </div>
+    </div>
+    
+    <!-- Result screen -->
+    <div class="result-container" id="result-container" style="display: none;">
+        <div class="result-header">Spel afgelopen!</div>
+        <div class="result-details">
+            Je eindscore is: <span id="final-score">0</span><br>
+            Je hebt <span id="correct-answers">0</span> van de <span id="total-questions">10</span> sommen goed beantwoord!
+        </div>
+        
+        <div class="mascot-result">
+            <img src="/assets/goed.png" alt="goed!">
+        </div>
+        
+        <div class="result-buttons">
+            <button class="btn" id="play-again-btn">Opnieuw spelen</button>
+            <button class="btn" id="home-btn">Terug naar home</button>
+        </div>
+    </div>
+    
+    <script src="index.js"></script>
+</body>
+</html>
