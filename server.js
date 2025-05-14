@@ -36,6 +36,10 @@ async function _settings(path) {
     return settings;
 }
 
+// LOAD API
+app.use('/account', account)
+app.use('/groep', groep)
+
 // ROUTING
 app.get('*', async (req, res) => {
     const settings = await _settings(req.path);
@@ -62,10 +66,6 @@ app.get('*', async (req, res) => {
         res.status(200).send(await document(settings));
     }
 })
-
-// LOAD API
-app.use('/account', account)
-app.use('/groep', groep)
 
 const PORT = 300;
 app.listen(PORT, () => {
