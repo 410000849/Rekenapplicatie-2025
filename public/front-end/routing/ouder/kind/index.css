@@ -1,0 +1,49 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f1f1f1;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.child-info {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  background-color: #e0f7fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.child-photo img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+}
+
+.child-details {
+  flex: 1;
+}
+
+.child-details h2 {
+  margin-top: 0;
+}
+
+.child-details p {
+  margin: 6px 0;
+}
