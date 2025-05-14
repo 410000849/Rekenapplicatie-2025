@@ -37,6 +37,13 @@ router.post('/signup', async (req, res) => {
     });
 })
 
+router.post('/logout', async (req, res) => {
+    if (req?.cookies?.['USER_TOKEN']) {
+        await res.clearCookie('USER_TOKEN');
+        res.status(200).send({ message: "Sucessfully logged out" });
+    };
+})
+
 async function login(res, table, email, wachtwoord) {
     if (!res || !email || !wachtwoord || !table) return res.status(500).send({ message: 'Er ging iets verkeerd' });
 
