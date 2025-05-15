@@ -24,7 +24,7 @@ async function loadContent() {
             group_id = data.group_id;
             let group_counter = 1;
 
-            group_members = await data.group_members.filter(member => 'punten' in member).sort((a, b) => a.punten - b.punten);
+            group_members = await data.group_members.filter(member => 'punten' in member).sort((a, b) => a.punten + b.punten);
             if (group_members.length < 1) return no_members();
 
             // AF MAKEN DOCENT EN IN LEERLING
