@@ -65,6 +65,7 @@ router.get('/current', async (req, res) => {
     if (!allMembers) return res.status(500).send({ success: false, message: "Something went wrong" });
 
     const group_members = allMembers.map(member => {
+        if ('punten' in member) return { naam: member.naam, rol: member.table_name, punten: member.punten };
         return { naam: member.naam, rol: member.table_name };
     });
 
