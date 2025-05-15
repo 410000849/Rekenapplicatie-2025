@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(express.json());
 
 // DATABASE CONNECTION
-import { createAccountNote, loginAccountNote, setCookie } from '../database.js';
+import { createAccountNote, loginAccountNote, setCookie, getAccountNoteByCookie } from '../database.js';
 
 // API ROUTING
 router.post('/login', async (req, res) => {
@@ -42,6 +42,15 @@ router.post('/logout', async (req, res) => {
         await res.clearCookie('USER_TOKEN');
         res.status(200).send({ message: "Sucessfully logged out" });
     };
+})
+
+router.get('/current', async (req, res) => {
+    const cookie = req.cookies['USER_TOKEN'].split(':')[1];
+    if (!cookie) return res.status(400).send({ success: false, message: "No active session found" });
+    const accountNote = await getAccountNoteByCookie(cookie);
+    if (!accountNote) return res.status(500).send({ success: false, message: "Something went wrong" });
+
+    return res.status(200).send({ success: true, data: accountNote });
 })
 
 async function login(res, table, email, wachtwoord) {
