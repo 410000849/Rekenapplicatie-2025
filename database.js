@@ -6,19 +6,12 @@ const db = new sqlite3.Database('database.sqlite');
 db.serialize();
 
 // DATABASE FUNCTIONS
-async function getAccountNote(email) {
+function getLeerlingNoteByEmail(email) {
     return new Promise((resolve, reject) => {
-        db.get(
-            'SELECT * FROM admin WHERE email = ?',
-            [email],
-            (err, row) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(row);
-                }
-            }
-        );
+        db.get(`SELECT *, 'leerling' as table_name FROM leerling WHERE email = ?`, [email], (err, row) => {
+            if (err) return reject(err);
+            resolve(row || null);
+        });
     });
 }
 
@@ -71,11 +64,11 @@ function getAllGroupMembers(group_id) {
     });
 }
 
-async function createAccountNote(naam, email, hash, geboortedatum, table) {
+async function createAccountNote(naam, email, hash, geboortedatum, table, leerling_id) {
     return new Promise((resolve, reject) => {
         db.run(
-            `INSERT INTO ${table} (naam, email, geboortedatum, wachtwoord) VALUES (?, ?, ?, ?)`,
-            [naam, email, geboortedatum, hash],
+            `INSERT INTO ${table} (naam, email, geboortedatum, wachtwoord, \`leerling id\`) VALUES (?, ?, ?, ?, ?)`,
+            [naam, email, geboortedatum, hash, leerling_id],
             function (err) {
                 if (err) {
                     reject(err);
@@ -134,11 +127,11 @@ async function confirmCookie(table, uniqueString) {
 
 async function createGroupNote(naam, type) {
     return new Promise((resolve, reject) => {
-        db.run(`INSERT INTO groep (naam, type) VALUES (?, ?)`, [naam, type], function(err) {
-                if (err) return reject(err);
-                resolve({ id: this.lastID });
-            }
-        );        
+        db.run(`INSERT INTO groep (naam, type) VALUES (?, ?)`, [naam, type], function (err) {
+            if (err) return reject(err);
+            resolve({ id: this.lastID });
+        }
+        );
     });
 }
 
@@ -153,7 +146,7 @@ async function leaveGroup(table, email) {
 
 // EXPORT THE FUNCTIONS
 export {
-    getAccountNote,
+    getLeerlingNoteByEmail,
     createAccountNote,
     loginAccountNote,
     setCookie,

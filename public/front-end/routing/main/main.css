@@ -97,6 +97,7 @@ header .left:hover img {
   border-radius: var(--radius-lg);
   transition: var(--transition-standard);
   position: relative;
+  
 }
 
 #pc-menu span:hover {
@@ -187,9 +188,7 @@ header .left:hover img {
   }
 }
 
-header {
-  animation: fadeSlideIn 0.5s var(--transition-emphasis) backwards;
-}
+
 
 #pc-menu span {
   animation: fadeSlideIn 0.4s var(--transition-emphasis) backwards;
@@ -430,3 +429,34 @@ footer a:hover:after {
 }
 
 
+.left
+{
+  padding-bottom: 10px;
+
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.left p {
+
+text-align: center;
+padding:10px;
+}
+
+.left h1 {
+  text-align: center;
+  padding:10px;
+}
+
+.left button {
+  align-items:center;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+  height: 50px;
+  
+
+
+}

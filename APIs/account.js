@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(express.json());
 
 // DATABASE CONNECTION
-import { createAccountNote, loginAccountNote, setCookie } from '../database.js';
+import { createAccountNote, loginAccountNote, setCookie, getAccountNoteByCookie, getLeerlingNoteByEmail } from '../database.js';
 
 // API ROUTING
 router.post('/login', async (req, res) => {
@@ -19,10 +19,21 @@ router.post('/login', async (req, res) => {
 router.post('/signup', async (req, res) => {
     const { username: naam, email, password: wachtwoord, birth_date: geboortedatum, table } = req.body;
     if (!naam || !email || !wachtwoord || !geboortedatum || !table) return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
+    let leerling_id;
+
+    if (table == 'ouder') {
+        const kind_email = req.body.kind_email;
+        if (!kind_email) return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
+
+        const leerling = await getLeerlingNoteByEmail(kind_email);
+        if (!leerling) return res.status(500).send({ message: 'Er ging iets verkeerd' });
+
+        leerling_id = leerling.id;
+    }
 
     const unhashedPassword = wachtwoord;
     bcrypt.hash(wachtwoord, saltRounds, async function (err, hash) {
-        const response = await createAccountNote(naam, email, hash, geboortedatum, table);
+        const response = await createAccountNote(naam, email, hash, geboortedatum, table, table == 'ouder' ? leerling_id : '');
         
         try {
             if (!response) return res.status(500).send({ message: 'Er ging iets verkeerd' });
@@ -42,6 +53,15 @@ router.post('/logout', async (req, res) => {
         await res.clearCookie('USER_TOKEN');
         res.status(200).send({ message: "Sucessfully logged out" });
     };
+})
+
+router.get('/current', async (req, res) => {
+    const cookie = req.cookies['USER_TOKEN'].split(':')[1];
+    if (!cookie) return res.status(400).send({ success: false, message: "No active session found" });
+    const accountNote = await getAccountNoteByCookie(cookie);
+    if (!accountNote) return res.status(500).send({ success: false, message: "Something went wrong" });
+
+    return res.status(200).send({ success: true, data: accountNote });
 })
 
 async function login(res, table, email, wachtwoord) {
