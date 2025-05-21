@@ -1,0 +1,21 @@
+<main>
+    <h1>Docentenoverzicht</h1>
+
+    <input type="text" id="zoek-docent" placeholder="Zoek docent op naam of e-mail..." />
+
+    <div class="docenten-container" id="docenten-container">
+        <div class="docent-card">
+            <img src="/assets/docent1.jpg" alt="Docent Foto">
+            <h3>Mevr. Smit</h3>
+            <p>smit@schoolmail.nl</p>
+            <button onclick="verwijderDocent('smit@schoolmail.nl')">Verwijder</button>
+        </div>
+
+        <div class="docent-card">
+            <img src="/assets/docent2.jpg" alt="Docent Foto">
+            <h3>Dhr. van Dijk</h3>
+            <p>vandijk@schoolmail.nl</p>
+            <button onclick="verwijderDocent('vandijk@schoolmail.nl')">Verwijder</button>
+        </div>
+    </div>
+</main>
