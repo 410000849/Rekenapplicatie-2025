@@ -9,6 +9,9 @@ const ouder_checkbox = signup_form.querySelector('#ouder');
 const docent_checkbox = signup_form.querySelector('#docent');
 const admin_checkbox = signup_form.querySelector('#admin');
 
+const checkboxes = document.querySelectorAll('#leerling, #ouder, #docent, #admin');
+
+
 const kind_email_outer_element = document.getElementById('kind-email-outer');
 const kind_email_input = document.getElementById('kind-email');
 
@@ -63,3 +66,15 @@ ouder_checkbox.addEventListener('change', () => {
         kind_email_input.required = false;
     };
 })
+
+checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            checkboxes.forEach((otherCheckbox) => {
+                if (otherCheckbox !== checkbox) {
+                    otherCheckbox.checked = false;
+                }
+            });
+        }
+    });
+});

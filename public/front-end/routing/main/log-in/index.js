@@ -1,4 +1,17 @@
+const checkboxes = document.querySelectorAll('#leerling, #ouder, #docent, #admin');
 const login_form = document.getElementById('login-form');
+checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            checkboxes.forEach((otherCheckbox) => {
+                if (otherCheckbox !== checkbox) {
+                    otherCheckbox.checked = false;
+                }
+            });
+        }
+    });
+});
+
 
 login_form.addEventListener('submit', async (event) => {
     event.preventDefault();
