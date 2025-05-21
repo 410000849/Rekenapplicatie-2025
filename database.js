@@ -6,9 +6,27 @@ const db = new sqlite3.Database('database.sqlite');
 db.serialize();
 
 // DATABASE FUNCTIONS
-function getLeerlingNoteByEmail(email) {
+function getNoteByEmail(table, email) {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT *, 'leerling' as table_name FROM leerling WHERE email = ?`, [email], (err, row) => {
+        db.get(`SELECT * FROM ${table} WHERE email = ?`, [email], (err, row) => {
+            if (err) return reject(err);
+            resolve(row || null);
+        });
+    });
+}
+
+function getNoteById(table, id) {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM ${table} WHERE id = ?`, [id], (err, row) => {
+            if (err) return reject(err);
+            resolve(row || null);
+        });
+    });
+}
+
+function getGroupNoteById(id) {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT * FROM groep WHERE id = ?`, [id], (err, row) => {
             if (err) return reject(err);
             resolve(row || null);
         });
@@ -146,7 +164,9 @@ async function leaveGroup(table, email) {
 
 // EXPORT THE FUNCTIONS
 export {
-    getLeerlingNoteByEmail,
+    getNoteByEmail,
+    getNoteById,
+    getGroupNoteById,
     createAccountNote,
     loginAccountNote,
     setCookie,
