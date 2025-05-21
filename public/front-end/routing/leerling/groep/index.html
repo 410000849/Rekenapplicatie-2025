@@ -1,7 +1,10 @@
 <section id="groep">
-    <h2 id="groepnaam">Join een groep</h2>
+    <div id="groep-info">
+        <h2 id="groepnaam">Join een groep</h2>
+        <span id="groepid"></span>
+    </div>
 
-    <form id="create-form">
+    <form id="create-form" style="display: none;">
         <span><b>Create group:</b></span><br>
         <span>Groep naam: </span><input id="groep-naam" type="text"><br>
         <span>Groep type: </span><input id="groep-type" type="text"><br>
@@ -10,98 +13,17 @@
 
     <br>
 
-    <form id="join-form">
+    <form id="join-form" style="display: none;">
         <span><b>Join group:</b></span><br>
         <span>Groep id: </span><input id="groep-id" type="number"><br>
         <button type="submit">Join groep</button>
     </form>
 
-    <br><br>
+    <br>
 
-    <ul id="groep-lijst" style="display: none;" class="groep-lijst">
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto meester Bas">
-            <div>
-                <strong>Meester Bas</strong>
-                <p>Docent</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Sofia">
-            <div>
-                <strong>Sofia de Jong</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Milan">
-            <div>
-                <strong>Milan Bakker</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Noor">
-            <div>
-                <strong>Noor Willems</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Sam">
-            <div>
-                <strong>Sam Vermeer</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Julia">
-            <div>
-                <strong>Julia Koster</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Daan">
-            <div>
-                <strong>Daan Peters</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Lotte">
-            <div>
-                <strong>Lotte van Dijk</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Jesse">
-            <div>
-                <strong>Jesse Mulder</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Eva">
-            <div>
-                <strong>Eva Smits</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Finn">
-            <div>
-                <strong>Finn Vos</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-        <li>
-            <img src="https://via.placeholder.com/48" alt="Profielfoto Yara">
-            <div>
-                <strong>Yara de Boer</strong>
-                <p>Leerling</p>
-            </div>
-        </li>
-    </ul>
+    <button id="leave-group" style="display: none;">Leave group</button>
+
+    <br>
+
+    <ul id="groep-lijst" style="display: none;" class="groep-lijst"></ul>
 </section>

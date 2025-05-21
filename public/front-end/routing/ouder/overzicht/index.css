@@ -1,0 +1,70 @@
+/* SECTION 2 - Progressieoverzicht */
+#section-2 {
+    background-color: #fff;
+    padding: 32px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-subtle);
+    margin: 0 auto;
+    max-width: 1000px;
+  }
+  
+  #section-2 h1 {
+    font-size: 24px;
+    margin-bottom: 24px;
+    color: var(--navy);
+  }
+  
+  #section-2 .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  
+  #section-2 .row > div {
+    flex: 1 1 220px;
+    background: var(--navy-lighter);
+    color: white;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    box-shadow: var(--shadow-subtle);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  #section-2 .row > div:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+  }
+  
+  #section-2 .row h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: white;
+  }
+  
+  #section-2 .row p {
+    font-size: 15px;
+    line-height: 1.4;
+    color: #e0e0e0;
+  }
+  
+  /* Leaderboard info */
+  #section-2 h3 {
+    font-size: 20px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    color: var(--navy);
+  }
+  
+  #section-2 p {
+    font-size: 16px;
+    color: var(--navy-light);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    #section-2 .row {
+      flex-direction: column;
+    }
+  }
+  

@@ -16,6 +16,12 @@ signup_form.addEventListener('submit', async (event) => {
     const table = leerlingIsChecked ? 'leerling' : ouderIsChecked ? 'ouder' : docentIsChecked ? 'docent' : adminIsChecked ? 'admin' : '';
     if (!table) return alert('Selecteer of u een leerling, ouder of een docent bent');
 
+    if (table == 'ouder') {
+        // EXTRA INPUT FOR LEERLING EMAIL OM TE KOPPELEN
+        // kind-email-outer
+        // Maak required via JS
+    };
+
     await fetch('account/signup', {
         method: 'POST',
         headers: {

@@ -142,6 +142,14 @@ async function createGroupNote(naam, type) {
     });
 }
 
+async function leaveGroup(table, email) {
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE ${table} SET \`groep id\` = '' WHERE email = ?`, [email], function (err) {
+            if (err) return reject(err);
+            resolve(true);
+        });
+    });
+}
 
 // EXPORT THE FUNCTIONS
 export {
@@ -153,5 +161,6 @@ export {
     createGroupNote,
     getAccountNoteByCookie,
     addGroupIdToAccount,
-    getAllGroupMembers
+    getAllGroupMembers,
+    leaveGroup
 };
