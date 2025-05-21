@@ -16,7 +16,7 @@
 
 #groep h2 {
   font-size: 24px;
-  color: #1f2454; /* donkerblauw */
+  color: #1f2454; 
   margin-bottom: 8px;
 }
 
@@ -25,7 +25,6 @@
   color: #777;
 }
 
-/* Algemene formstijl */
 form {
   background: #f9f9f9;
   padding: 20px;
@@ -59,7 +58,6 @@ input[type="number"] {
   font-size: 14px;
 }
 
-/* Knoppenstijl: zelfde als 'Bekijk' in dashboard */
 button {
   background-color: #e09132;
   color: white;
@@ -128,7 +126,6 @@ button:hover {
   color: #e0e0e0;
 }
 
-/* Mobielvriendelijk */
 @media (max-width: 500px) {
   .groep-lijst li {
     flex-direction: column;
