@@ -1,0 +1,160 @@
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Algemene row */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+/* SECTION 1 - Profiel en Updates */
+#section-1 .left,
+#section-1 .right {
+  flex: 1;
+  min-width: 280px;
+  background: white;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-subtle);
+}
+
+#section-1 .left img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  background-color: #e0e0e0;
+  margin-bottom: 16px;
+}
+
+#section-1 h2 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: var(--navy);
+}
+
+#section-1 p {
+  color: var(--navy-light);
+  line-height: 1.5;
+}
+
+/* SECTION 2 - Kaarten met knoppen */
+#section-2 .row>div {
+  flex: 1 1 220px;
+  background: white;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-subtle);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+#section-2 .row>div:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-medium);
+}
+
+#section-2 h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: var(--navy);
+}
+
+#section-2 p {
+  color: var(--navy-light);
+  margin-bottom: 16px;
+}
+
+#section-2 button {
+  background: var(--orange);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-standard), transform var(--transition-fast);
+}
+
+#section-2 button:hover {
+  background: var(--orange-light);
+  transform: scale(1.05);
+}
+
+#section-2 button:active {
+  background: var(--orange-dark);
+  transform: scale(0.98);
+}
+
+/* SECTION 3 - Hulp */
+#section-3>div {
+  background: white;
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-subtle);
+  text-align: center;
+}
+
+#section-3 h2 {
+  font-size: 22px;
+  margin-bottom: 12px;
+  color: var(--navy);
+}
+
+#section-3 p {
+  color: var(--navy-light);
+  margin-bottom: 20px;
+}
+
+#section-3 button {
+  background: var(--orange);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-standard), transform var(--transition-fast);
+}
+
+#section-3 button:hover {
+  background: var(--orange-light);
+  transform: translateY(-2px);
+}
+
+#section-3 button:active {
+  background: var(--orange-dark);
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+}
+
+.logout-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.logout-button:hover {
+  background-color: #e60000;
+}

@@ -92,6 +92,7 @@ header .left:hover img {
   font-size: 16px;
   font-weight: 500;
   color: var(--navy);
+  cursor: pointer;
   padding: 8px 16px;
   border-radius: var(--radius-lg);
   transition: var(--transition-standard);
@@ -401,7 +402,7 @@ footer nav a:hover {
   color: var(--orange);
 }
 
-.logout-button {
+#logout-button {
   position: fixed;
   top: 20px;
   right: 20px;
@@ -415,6 +416,6 @@ footer nav a:hover {
   z-index: 1000;
 }
 
-.logout-button:hover {
+#logout-button:hover {
   background-color: #e60000;
 }
