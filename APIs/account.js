@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(express.json());
 
 // DATABASE CONNECTION
-import { createAccountNote, loginAccountNote, setCookie, getAccountNoteByCookie } from '../database.js';
+import { createAccountNote, loginAccountNote, setCookie, getAccountNoteByCookie, getLeerlingNoteByEmail } from '../database.js';
 
 // API ROUTING
 router.post('/login', async (req, res) => {
@@ -19,10 +19,21 @@ router.post('/login', async (req, res) => {
 router.post('/signup', async (req, res) => {
     const { username: naam, email, password: wachtwoord, birth_date: geboortedatum, table } = req.body;
     if (!naam || !email || !wachtwoord || !geboortedatum || !table) return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
+    let leerling_id;
+
+    if (table == 'ouder') {
+        const kind_email = req.body.kind_email;
+        if (!kind_email) return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
+
+        const leerling = await getLeerlingNoteByEmail(kind_email);
+        if (!leerling) return res.status(500).send({ message: 'Er ging iets verkeerd' });
+
+        leerling_id = leerling.id;
+    }
 
     const unhashedPassword = wachtwoord;
     bcrypt.hash(wachtwoord, saltRounds, async function (err, hash) {
-        const response = await createAccountNote(naam, email, hash, geboortedatum, table);
+        const response = await createAccountNote(naam, email, hash, geboortedatum, table, table == 'ouder' ? leerling_id : '');
         
         try {
             if (!response) return res.status(500).send({ message: 'Er ging iets verkeerd' });
