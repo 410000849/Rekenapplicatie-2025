@@ -17,7 +17,7 @@ router.get('/leerling', async (req, res) => {
 
     // leerling info
     const leerling_id = accountNote?.["leerling id"];
-    if (!leerling_id) return res.status(500).send({ success: false, message: "Something went wrong" });
+    if (!leerling_id) return res.status(200).send({ success: false, message: "Geen leerling gevonden" });
 
     const leerling = await getNoteById('leerling', leerling_id);
     if (!leerling) return res.status(500).send({ success: false, message: "Something went wrong" });
