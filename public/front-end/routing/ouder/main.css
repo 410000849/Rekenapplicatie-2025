@@ -35,6 +35,7 @@ body {
   font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   background-color: #FAFAFA;
   color: var(--navy);
+  padding: 0;
 }
 
 header {
