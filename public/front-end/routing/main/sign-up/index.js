@@ -73,6 +73,11 @@ checkboxes.forEach((checkbox) => {
             checkboxes.forEach((otherCheckbox) => {
                 if (otherCheckbox !== checkbox) {
                     otherCheckbox.checked = false;
+                    
+                    if (otherCheckbox.id == 'ouder') {
+                        kind_email_outer_element.style.display = 'none';
+                        kind_email_input.required = false;
+                    }
                 }
             });
         }
