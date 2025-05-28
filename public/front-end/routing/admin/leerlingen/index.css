@@ -4,7 +4,9 @@
     justify-content: center;
     gap: 20px;
 }
-
+main {
+    padding: 20px;
+}
 .leerling-card {
     background-color: #fff;
     border-radius: 10px;
@@ -14,7 +16,10 @@
     text-align: center;
     transition: transform 0.2s ease;
 }
-
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
 .leerling-card:hover {
     transform: scale(1.03);
 }
