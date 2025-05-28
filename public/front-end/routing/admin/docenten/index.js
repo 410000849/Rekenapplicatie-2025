@@ -11,7 +11,7 @@ var group_members = [];
 async function loadContent() {
     await fetch('/groep/current').then(response => response.json()).then(data => {
         if (!data) return;
-        groep_lijst.innerHTML = "";
+        groep_lijst.innerHTML = "";l
         
         if (data?.success == true) {
             group_id = data.group_id;
