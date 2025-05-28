@@ -10,6 +10,9 @@ let correctAnswers = 0;
 let timerInterval = null;
 let timePerQuestion = 10; // Hardcoded to 10 seconds per question
 let remainingTime = 0;
+let easyPoints = 10;
+let mediumPoints = 15;
+let hardPoints = 20;
 
 // Image paths
 const happyImage = "/assets/goed.png"; // Replace with your actual image
@@ -233,8 +236,13 @@ function checkAnswer(selectedOption) {
         if (isCorrect) {
             feedbackElement.innerHTML = `<span>Goed gedaan!</span><img src="${happyImage}" alt="Goed">`;
             feedbackElement.style.color = 'green';
-            score += 10;
-            correctAnswers++;
+            if (currentLevel === 'easy') {
+                score += easyPoints;
+            } else if (currentLevel === 'medium') {
+                score += mediumPoints;
+            } else if (currentLevel === 'hard') {
+                score += hardPoints;
+            }            correctAnswers++;
             lootbox.classList.add('animate');
             setTimeout(() => {
                 lootbox.classList.remove('animate');
