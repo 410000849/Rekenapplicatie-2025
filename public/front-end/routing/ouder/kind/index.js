@@ -12,7 +12,7 @@ async function loadContent() {
         console.log(data)
 
         if (data?.success == true) {
-            container_element.style.display = 'flex';
+            container_element.style.display = 'block';
             const leerling = data.data;
             console.log(leerling);
             kind_naam_element.textContent = leerling.naam;
