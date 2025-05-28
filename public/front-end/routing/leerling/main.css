@@ -95,6 +95,7 @@ header .left:hover img {
   padding: 8px 16px;
   border-radius: var(--radius-lg);
   transition: var(--transition-standard);
+  cursor: pointer;
   position: relative;
 }
 
