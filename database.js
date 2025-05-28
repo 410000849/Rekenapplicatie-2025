@@ -119,6 +119,15 @@ async function loginAccountNote(email, wachtwoord, table) {
     });
 }
 
+async function voegPuntenToe(id, table, score) {
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE ${table} SET punten = ? WHERE id = ?`, [score, id], function (err) {
+            if (err) return reject(err);
+            resolve(this.changes > 0);
+        });
+    });
+}
+
 async function setCookie(table, email, uniqueString, res) {
     return new Promise((resolve, reject) => {
         db.run(`UPDATE ${table} SET cookie = ? WHERE email = ?`, [uniqueString, email], function (err) {
@@ -180,5 +189,6 @@ export {
     getAccountNoteByCookie,
     addGroupIdToAccount,
     getAllGroupMembers,
-    leaveGroup
+    leaveGroup,
+    voegPuntenToe
 };

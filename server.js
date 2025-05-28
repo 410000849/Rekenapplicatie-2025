@@ -12,6 +12,7 @@ import path from 'path';
 import account from './APIs/account.js';
 import groep from './APIs/groep.js';
 import ouder from './APIs/ouder.js';
+import game from './APIs/game.js';
 
 // DEBUG MODE
 const debug = false;
@@ -41,6 +42,7 @@ async function _settings(path) {
 app.use('/account', account)
 app.use('/groep', groep)
 app.use('/ouder', ouder)
+app.use('/game', game)
 
 // ROUTING
 app.get('*', async (req, res) => {
