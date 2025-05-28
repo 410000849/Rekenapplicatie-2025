@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(express.json());
 
 // DATABASE CONNECTION
-import { createAccountNote, loginAccountNote, setCookie, getAccountNoteByCookie, getLeerlingNoteByEmail } from '../database.js';
+import { createAccountNote, loginAccountNote, setCookie, getAccountNoteByCookie, getNoteByEmail } from '../database.js';
 
 // API ROUTING
 router.post('/login', async (req, res) => {
@@ -25,7 +25,7 @@ router.post('/signup', async (req, res) => {
         const kind_email = req.body.kind_email;
         if (!kind_email) return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
 
-        const leerling = await getLeerlingNoteByEmail(kind_email);
+        const leerling = await getNoteByEmail('leerling', kind_email);
         if (!leerling) return res.status(500).send({ message: 'Er ging iets verkeerd' });
 
         leerling_id = leerling.id;
