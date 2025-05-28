@@ -14,7 +14,10 @@
   text-align: center;
   transition: transform var(--transition-fast);
 }
-
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
 .groep-card:hover {
   transform: scale(1.03);
 }
@@ -42,4 +45,16 @@
 
 .groep-card button:hover {
   background-color: #c0392b;
+}
+#zoek-groep {
+  display: block;
+  margin: 0 auto 30px auto;
+  padding: 10px;
+  width: 60%;
+  max-width: 400px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+main {
+  padding: 20px;
 }
