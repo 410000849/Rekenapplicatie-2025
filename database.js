@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import sqlite3 from 'sqlite3';
 import bcrypt from 'bcrypt';
 const db = new sqlite3.Database('database.sqlite');
@@ -84,17 +83,23 @@ function getAllGroupMembers(group_id) {
 
 async function createAccountNote(naam, email, hash, geboortedatum, table, leerling_id) {
     return new Promise((resolve, reject) => {
-        db.run(
-            `INSERT INTO ${table} (naam, email, geboortedatum, wachtwoord, \`leerling id\`) VALUES (?, ?, ?, ?, ?)`,
-            [naam, email, geboortedatum, hash, leerling_id],
-            function (err) {
+        db.get(`SELECT email FROM ${table} WHERE email = ?`, [email], (err, row) => {
+            if (err) return reject(err);
+            if (row) return reject(new Error(`Email '${email}' bestaat al in de tabel '${table}'`));
+            const isOuder = table === "ouder";
+
+            const columns = `naam, email, geboortedatum, wachtwoord${isOuder ? ", \`leerling id\`" : ""}`;
+            const placeholders = isOuder ? "?, ?, ?, ?, ?" : "?, ?, ?, ?";
+            const values = isOuder ? [naam, email, geboortedatum, hash, leerling_id] : [naam, email, geboortedatum, hash];
+
+            db.run(`INSERT INTO ${table} (${columns}) VALUES (${placeholders})`, values, function (err) {
                 if (err) {
                     reject(err);
                 } else {
                     resolve({ id: this.lastID, naam, email, wachtwoord: hash });
                 }
-            }
-        );
+            });
+        });
     });
 }
 

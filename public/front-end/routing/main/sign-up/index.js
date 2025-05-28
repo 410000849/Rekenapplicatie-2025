@@ -51,7 +51,7 @@ signup_form.addEventListener('submit', async (event) => {
         const { message } = data;
         if (!data?.message) return await alert('Er ging iets mis tijdens het inloggen');
         if (message.includes('successvol')) document.location.href = `/${table}/home`;
-        else if (message.includes('incorrect')) return alert(data.message);
+        else return alert(data.message);
     })
 })
 
