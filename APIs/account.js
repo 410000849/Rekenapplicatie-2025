@@ -33,17 +33,16 @@ router.post('/signup', async (req, res) => {
 
     const unhashedPassword = wachtwoord;
     bcrypt.hash(wachtwoord, saltRounds, async function (err, hash) {
-        const response = await createAccountNote(naam, email, hash, geboortedatum, table, table == 'ouder' ? leerling_id : '');
-        
         try {
+            const response = await createAccountNote(naam, email, hash, geboortedatum, table, table == 'ouder' ? leerling_id : null);
             if (!response) return res.status(500).send({ message: 'Er ging iets verkeerd' });
-            const { id, naam, email, wachtwoord } = response;
-            if (!id || !naam || !email || !wachtwoord) return res.status(500).send({ message: 'Er ging iets verkeerd' });
 
-            await login(res, table, email, unhashedPassword);
+            const { id: _id, naam: _naam, email: _email, wachtwoord: _wachtwoord } = response;
+            if (!_id || !_naam || !_email || !_wachtwoord) return res.status(500).send({ message: 'Er ging iets verkeerd' });
+
+            await login(res, table, _email, unhashedPassword);
         } catch(err) {
-            if (!response) return res.status(500).send({ message: 'Er ging iets verkeerd' });
-            console.log('Er ging iets verkeerd tijdens het signing up:', err);
+            return res.status(500).send({ message: 'Er ging iets mis tijdens het aanmaken van een account' });
         }
     });
 })
