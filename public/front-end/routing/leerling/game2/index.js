@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startScreen = document.getElementById('start-screen');
     const gameContainer = document.getElementById('game-container');
     const resultContainer = document.getElementById('result-container');
-    
+
     // Game elements
     const startGameBtn = document.getElementById('start-game-btn');
     const resetBtn = document.getElementById('reset-btn');
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let easyPoints = 10;
     let mediumPoints = 15;
     let hardPoints = 20;
-    
+
     // Level settings
     const levels = {
         easy: {
@@ -107,12 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
         correctAnswers = 0;
         currentQuestion = 0;
         updateScore();
-        
+
         // Show game container and hide other screens
         startScreen.style.display = 'none';
         gameContainer.style.display = 'block';
         resultContainer.style.display = 'none';
-        
+
         nextQuestion();
     }
 
@@ -120,12 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
         currentQuestion++;
         feedbackEl.textContent = '';
         feedbackEl.className = 'feedback';
-        
+
         if (currentQuestion > totalQuestions) {
             endGame();
             return;
         }
-        
+
         resetSelection();
         generateQuestion();
         startTimer();
@@ -133,14 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateQuestion() {
         const settings = levels[currentLevel];
-        
+
         // Generate target number
         targetNumber = getRandomNumber(settings.minTarget, settings.maxTarget);
         targetNumberEl.textContent = targetNumber;
-        
+
         // Generate cards that make it possible to reach the target
         currentCards = generatePossibleCards(settings);
-        
+
         // Display the cards
         displayCards();
     }
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let sum = 0;
         const cardsNeeded = getRandomNumber(2, 4); // Player will need 2-4 cards to reach target
         correctCombination = []; // Reset correct combination
-        
+
         // Generate cards that can be summed to reach target
         for (let i = 0; i < cardsNeeded - 1; i++) {
             const maxValue = targetNumber - sum - settings.minCardValue; // Ensure we can still add at least one more card
@@ -159,11 +159,11 @@ document.addEventListener('DOMContentLoaded', () => {
             correctCombination.push(value); // Add to correct combination
             sum += value;
         }
-        
+
         // Add the final card to reach the target exactly
         cards.push(targetNumber - sum);
         correctCombination.push(targetNumber - sum); // Add final card to correct combination
-        
+
         // Add distractor cards
         while (cards.length < settings.numberOfCards) {
             const value = getRandomNumber(settings.minCardValue, settings.maxCardValue);
@@ -172,27 +172,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 cards.push(value);
             }
         }
-        
+
         // Shuffle the cards
         return shuffleArray(cards);
     }
 
     function displayCards() {
         cardsContainer.innerHTML = '';
-        
+
         currentCards.forEach((value, index) => {
             const card = document.createElement('div');
             card.className = 'card';
             card.textContent = value;
             card.dataset.index = index;
             card.dataset.value = value;
-            
+
             card.addEventListener('click', () => {
                 if (!card.classList.contains('selected') && !card.classList.contains('disabled')) {
                     selectCard(card, index);
                 }
             });
-            
+
             cardsContainer.appendChild(card);
         });
     }
@@ -200,21 +200,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function selectCard(card, index) {
         card.classList.add('selected');
         card.classList.add('disabled');
-        
+
         const value = parseInt(card.dataset.value);
         selectedCards.push({ index, value });
-        
+
         // Update selected cards display
         const selectedCard = document.createElement('div');
         selectedCard.className = 'selected-card';
         selectedCard.textContent = value;
         selectedCard.dataset.index = index;
         selectedCardsEl.appendChild(selectedCard);
-        
+
         // Update current sum
         currentSum += value;
         currentSumEl.textContent = currentSum;
-        
+
         // Check if target is reached
         checkSum();
     }
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Correct answer
             feedbackEl.textContent = 'Goed gedaan! Je hebt het juiste getal bereikt!';
             feedbackEl.className = 'feedback correct';
-            
+
             correctAnswers++;
             if (currentLevel === 'easy') {
                 score += easyPoints;
@@ -234,21 +234,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 score += hardPoints;
             }
             updateScore();
-            
+
             // Disable all cards
             document.querySelectorAll('.card').forEach(card => {
                 card.classList.add('disabled');
             });
-            
+
             // Stop the timer
             stopTimer();
-            
+
             // Animate lootbox
             lootbox.classList.add('animate');
             setTimeout(() => {
                 lootbox.classList.remove('animate');
             }, 1000);
-            
+
             // Automatically proceed to next question after a delay
             setTimeout(() => {
                 nextQuestion();
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Sum is too high
             feedbackEl.textContent = 'De som is te hoog! Probeer opnieuw.';
             feedbackEl.className = 'feedback incorrect';
-            
+
             // Allow trying again
             resetSelection();
         }
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedCardsEl.innerHTML = '';
         feedbackEl.textContent = '';
         feedbackEl.className = 'feedback';
-        
+
         // Reset card selection
         document.querySelectorAll('.card').forEach(card => {
             card.classList.remove('selected');
@@ -283,48 +283,60 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function endGame() {
-        // Stop the timer
-        stopTimer();
-        
-        // Hide game container and show result screen
-        gameContainer.style.display = 'none';
-        resultContainer.style.display = 'block';
-        
-        // Update result information
-        finalScoreEl.textContent = score;
-        correctAnswersEl.textContent = correctAnswers;
-        totalQuestionsEl.textContent = totalQuestions;
+        fetch('/game/score', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                score
+            })
+        }).then(response => response.json()).then(data => {
+            if (!data?.success) return alert('Something went wrong');
+
+            // Stop the timer
+            stopTimer();
+
+            // Hide game container and show result screen
+            gameContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+
+            // Update result information
+            finalScoreEl.textContent = score;
+            correctAnswersEl.textContent = correctAnswers;
+            totalQuestionsEl.textContent = totalQuestions;
+        });
     }
 
     function startTimer() {
         // Clear any existing timer
         stopTimer();
-        
+
         // Set time based on difficulty level
         const settings = levels[currentLevel];
         timeRemaining = settings.timeLimit;
-        
+
         // Update timer display
         timerValueEl.textContent = timeRemaining;
         timerFill.style.width = '100%';
         timerContainer.style.display = 'block';
-        
+
         // Start the timer
         timerInterval = setInterval(() => {
             timeRemaining--;
             timerValueEl.textContent = timeRemaining;
-            
+
             // Update timer bar
             const percentage = (timeRemaining / settings.timeLimit) * 100;
             timerFill.style.width = `${percentage}%`;
-            
+
             // Change color when time is running out
             if (timeRemaining <= 5) {
                 timerFill.style.backgroundColor = '#dc3545'; // Red
             } else {
                 timerFill.style.backgroundColor = '#f2ae30'; // Yellow/orange
             }
-            
+
             if (timeRemaining <= 0) {
                 // Time's up
                 timeUp();
@@ -338,20 +350,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function timeUp() {
         stopTimer();
-        
+
         // Show the correct answer combination
         let correctAnswerText = 'Tijd is op! Een juist antwoord was: ' + correctCombination.join(' + ') + ' = ' + targetNumber;
         feedbackEl.textContent = correctAnswerText;
         feedbackEl.className = 'feedback incorrect';
-        
+
         // Highlight the correct cards
         highlightCorrectCards();
-        
+
         // Disable all cards
         document.querySelectorAll('.card').forEach(card => {
             card.classList.add('disabled');
         });
-        
+
         // Move to next question after a short delay
         setTimeout(() => {
             nextQuestion();
@@ -362,11 +374,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Find cards with values in correctCombination and highlight them
         const allCards = document.querySelectorAll('.card');
         const usedIndices = [];
-        
+
         correctCombination.forEach(correctValue => {
             for (let i = 0; i < allCards.length; i++) {
                 if (usedIndices.includes(i)) continue;
-                
+
                 const cardValue = parseInt(allCards[i].dataset.value);
                 if (cardValue === correctValue) {
                     allCards[i].style.backgroundColor = '#28a745'; // Green
@@ -391,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return newArray;
     }
-    
+
     // Initialize the game
     init();
 });
