@@ -38,7 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let timerInterval = null;
     let timeRemaining = 0;
     let correctCombination = []; // Store the correct combination of cards
-
+    let easyPoints = 10;
+    let mediumPoints = 15;
+    let hardPoints = 20;
+    
     // Level settings
     const levels = {
         easy: {
@@ -223,7 +226,13 @@ document.addEventListener('DOMContentLoaded', () => {
             feedbackEl.className = 'feedback correct';
             
             correctAnswers++;
-            score += 10;
+            if (currentLevel === 'easy') {
+                score += easyPoints;
+            } else if (currentLevel === 'medium') {
+                score += mediumPoints;
+            } else if (currentLevel === 'hard') {
+                score += hardPoints;
+            }
             updateScore();
             
             // Disable all cards
