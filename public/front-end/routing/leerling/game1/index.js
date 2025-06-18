@@ -1,5 +1,6 @@
 // Game variables
 let currentLevel = 'easy';
+let groupDifficultyLoaded = false;
 let score = 0;
 let correctAnswer = null;
 let options = [];
@@ -66,6 +67,71 @@ const timerFill = document.querySelector('.timer-fill');
 const resultFeedback = document.getElementById('result-feedback');
 const character = document.querySelector('.character');
 const characterImg = document.getElementById('character-img');
+
+// Load group difficulty settings
+async function loadGroupDifficulty() {
+    try {
+        const response = await fetch('/groep/difficulty');
+        const data = await response.json();
+        
+        if (data.success) {
+            currentLevel = data.difficulties.game1_difficulty || 'easy';
+            groupDifficultyLoaded = true;
+            
+            // Update UI to show the set difficulty
+            updateLevelButtons();
+            showDifficultyMessage();
+        } else {
+            console.log('No group difficulty found, using default easy mode');
+            groupDifficultyLoaded = true;
+        }
+    } catch (error) {
+        console.error('Error loading group difficulty:', error);
+        groupDifficultyLoaded = true;
+    }
+}
+
+// Update level buttons to show current difficulty and disable selection
+function updateLevelButtons() {
+    levelBtns.forEach(btn => {
+        btn.classList.remove('active');
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+        btn.style.cursor = 'not-allowed';
+        
+        if (btn.dataset.level === currentLevel) {
+            btn.classList.add('active');
+            btn.style.opacity = '1';
+        }
+    });
+}
+
+// Show message about difficulty being set by teacher
+function showDifficultyMessage() {
+    const levelContainer = document.querySelector('.level-container');
+    const existingMessage = document.getElementById('difficulty-message');
+    
+    if (!existingMessage) {
+        const message = document.createElement('p');
+        message.id = 'difficulty-message';
+        message.style.fontSize = '14px';
+        message.style.color = '#666';
+        message.style.marginTop = '10px';
+        message.style.textAlign = 'center';
+        message.textContent = `Moeilijkheidsgraad ingesteld door je docent: ${getDifficultyDisplayName(currentLevel)}`;
+        levelContainer.appendChild(message);
+    }
+}
+
+// Get display name for difficulty
+function getDifficultyDisplayName(level) {
+    const names = {
+        easy: 'Makkelijk',
+        medium: 'Gemiddeld', 
+        hard: 'Moeilijk'
+    };
+    return names[level] || 'Makkelijk';
+}
 
 // Generate a random number within a range
 function randomNumber(min, max) {
@@ -445,7 +511,13 @@ function showFireworks() {
 }
 
 // Event listeners
-startBtn.addEventListener('click', startGame);
+startBtn.addEventListener('click', () => {
+    if (!groupDifficultyLoaded) {
+        alert('Laden van instellingen...');
+        return;
+    }
+    startGame();
+});
 
 btnA.addEventListener('click', () => {
     if (!gameRunning) return;
@@ -462,18 +534,20 @@ btnC.addEventListener('click', () => {
     checkAnswer('C');
 });
 
+// Level buttons are disabled - difficulty is set by teacher
 levelBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        if (gameRunning) return;
-
-        // Update active level
-        levelBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentLevel = btn.dataset.level;
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        return false;
     });
 });
 
 playAgainBtn.addEventListener('click', startGame);
+
+// Load group difficulty when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    loadGroupDifficulty();
+});
 
 // Keyboard controls
 document.addEventListener('keydown', (e) => {
