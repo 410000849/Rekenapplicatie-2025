@@ -9,7 +9,8 @@ var group_members = [];
 
 // FUNCTIONS
 async function loadContent() {
-    await fetch('/groep/current').then(response => response.json()).then(data => {
+    await fetch('/admin/current').then(response => response.json()).then(data => {
+        console.log(data);
         if (!data) return;
         groep_lijst.innerHTML = "";l
         
