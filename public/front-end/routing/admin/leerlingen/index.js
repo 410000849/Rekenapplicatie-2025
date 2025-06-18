@@ -4,40 +4,44 @@ var group_id = '';
 var group_members = [];
 
 // FUNCTIONS
+async function verwijderLeerling(email) {
+    console.log(`Verwijderen: ${email}`);
+};
+
 async function verwijderDocent(email) {
     console.log(`Verwijderen: ${email}`);
 };
 
 async function loadContent() {
     try {
-        const response = await fetch('/admin/alledocenten');
+        const response = await fetch('/admin/alleleerlingen');
         const data = await response.json();
 
         if (!data) return;
 
-        const container = document.getElementById('docenten-container');
+        const container = document.getElementById('leerlingen-container');
         container.innerHTML = '';
 
-        if (data.success === true && Array.isArray(data.alleDocenten)) {
-            for (const docent of data.alleDocenten) {
-                const { naam, email } = docent;
+        if (data.success === true && Array.isArray(data.alleLeerlingen)) {
+            for (const leerling of data.alleLeerlingen) {
+                const { naam, email } = leerling;
 
                 const card = document.createElement('div');
-                card.classList.add('docent-card');
+                card.classList.add('leerling-card');
 
                 const img = document.createElement('img');
-                img.src = '/assets/default-docent.jpg';
-                img.alt = 'Docent Foto';
+                img.src = '/assets/default-leerling.jpg';
+                img.alt = 'Leerling Foto';
 
                 const h3 = document.createElement('h3');
-                h3.textContent = naam || 'Onbekende docent';
+                h3.textContent = naam || 'Onbekende leerling';
 
                 const p = document.createElement('p');
                 p.textContent = email || '';
 
                 const button = document.createElement('button');
                 button.textContent = 'Verwijder';
-                button.onclick = () => verwijderDocent(email);
+                button.onclick = () => verwijderLeerling(email);
 
                 // Samenstellen van de kaart
                 card.appendChild(img);

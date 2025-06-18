@@ -10,6 +10,7 @@ import { confirmCookie } from './database.js';
 import path from 'path';
 
 import account from './APIs/account.js';
+import admin from './APIs/admin.js';
 import groep from './APIs/groep.js';
 import ouder from './APIs/ouder.js';
 import game from './APIs/game.js';
@@ -40,6 +41,7 @@ async function _settings(path) {
 
 // LOAD API
 app.use('/account', account)
+app.use('/admin', admin)
 app.use('/groep', groep)
 app.use('/ouder', ouder)
 app.use('/game', game)
