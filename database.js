@@ -204,6 +204,15 @@ async function allNameAndEmails(table) {
     });
 }
 
+async function allGroups() {
+    return new Promise((resolve, reject) => {
+        db.all(`SELECT naam, type FROM groep`, (err, rows) => {
+            if (err) return reject(err);
+            resolve(rows);
+        });
+    });
+}
+
 // EXPORT THE FUNCTIONS
 export {
     getNoteByEmail,
@@ -221,5 +230,6 @@ export {
     voegPuntenToe,
     setGroupDifficulty,
     getGroupDifficulty,
-    allNameAndEmails
+    allNameAndEmails,
+    allGroups
 };

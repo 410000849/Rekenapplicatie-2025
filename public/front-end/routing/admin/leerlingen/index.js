@@ -1,5 +1,3 @@
-const groep_lijst = document.getElementById('docenten-container');
-
 var group_id = '';
 var group_members = [];
 
