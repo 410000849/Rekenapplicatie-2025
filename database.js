@@ -176,7 +176,6 @@ async function leaveGroup(table, email) {
     });
 }
 
-<<<<<<< HEAD
 async function setGroupDifficulty(groupId, game1Difficulty, game2Difficulty) {
     return new Promise((resolve, reject) => {
         db.run(`UPDATE groep SET game1_difficulty = ?, game2_difficulty = ? WHERE id = ?`, 
@@ -192,14 +191,15 @@ async function getGroupDifficulty(groupId) {
         db.get(`SELECT game1_difficulty, game2_difficulty FROM groep WHERE id = ?`, [groupId], (err, row) => {
             if (err) return reject(err);
             resolve(row || { game1_difficulty: 'easy', game2_difficulty: 'easy' });
-=======
+        });
+    });
+}
 
 async function allNameAndEmails(table) {
     return new Promise((resolve, reject) => {
         db.all(`SELECT naam, email FROM ${table}`, (err, rows) => {
             if (err) return reject(err);
             resolve(rows);
->>>>>>> abd5a859e701564f6e1c95f00a65ca9cc7ec38dd
         });
     });
 }
@@ -219,10 +219,7 @@ export {
     getAllGroupMembers,
     leaveGroup,
     voegPuntenToe,
-<<<<<<< HEAD
     setGroupDifficulty,
-    getGroupDifficulty
-=======
+    getGroupDifficulty,
     allNameAndEmails
->>>>>>> abd5a859e701564f6e1c95f00a65ca9cc7ec38dd
 };
