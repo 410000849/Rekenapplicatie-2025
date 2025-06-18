@@ -76,12 +76,14 @@ router.post('/difficulty', async (req, res) => {
         return res.status(400).send({ success: false, message: 'Moeilijkheidsgraad voor beide games is vereist' });
     }
 
-    const validDifficulties = ['easy', 'medium', 'hard'];
-    if (!validDifficulties.includes(game1Difficulty) || !validDifficulties.includes(game2Difficulty)) {
+    const validDifficulties = ['easy', 'medium', 'hard'];    if (!validDifficulties.includes(game1Difficulty) || !validDifficulties.includes(game2Difficulty)) {
         return res.status(400).send({ success: false, message: 'Ongeldige moeilijkheidsgraad' });
     }
 
-    const cookie = req.cookies['USER_TOKEN'].split(':')[1];
+    const cookieHeader = req.cookies['USER_TOKEN'];
+    if (!cookieHeader) return res.status(400).send({ success: false, message: "No active session found" });
+    
+    const cookie = cookieHeader.split(':')[1];
     if (!cookie) return res.status(400).send({ success: false, message: "No active session found" });
     
     const accountNote = await getAccountNoteByCookie(cookie);
@@ -104,7 +106,10 @@ router.post('/difficulty', async (req, res) => {
 })
 
 router.get('/difficulty', async (req, res) => {
-    const cookie = req.cookies['USER_TOKEN'].split(':')[1];
+    const cookieHeader = req.cookies['USER_TOKEN'];
+    if (!cookieHeader) return res.status(400).send({ success: false, message: "No active session found" });
+    
+    const cookie = cookieHeader.split(':')[1];
     if (!cookie) return res.status(400).send({ success: false, message: "No active session found" });
     
     const accountNote = await getAccountNoteByCookie(cookie);
