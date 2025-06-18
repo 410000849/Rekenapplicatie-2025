@@ -12,10 +12,7 @@ import { getAccountNoteByCookie, voegPuntenToe } from '../database.js';
 router.post('/score', async (req, res) => {
     const cookieHeader = req.cookies['USER_TOKEN'];
     if (!cookieHeader) return res.status(400).send({ success: false, message: "No active session found" });
-<<<<<<< HEAD
-=======
     
->>>>>>> 119a331d86d9eb8a33a4b91b3e8cd0fbffe70473
     const cookie = cookieHeader.split(':')[1];
     const { score } = req?.body;
 
@@ -26,6 +23,7 @@ router.post('/score', async (req, res) => {
     if (!accountNote || !accountNote?.id || !accountNote?.table_name || accountNote?.table_name !== 'leerling') {
         return res.status(500).send({ success: false, message: "Something went wrong" });
     }
+    console.log('accountNote:', accountNote);
 
     // Handle case where user has no points yet (new user)
     const currentPoints = accountNote.punten || 0;
