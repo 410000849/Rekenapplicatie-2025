@@ -23,8 +23,7 @@ router.post('/score', async (req, res) => {
     if (!accountNote || !accountNote?.id || !accountNote?.table_name || accountNote?.table_name !== 'leerling') {
         return res.status(500).send({ success: false, message: "Something went wrong" });
     }
-    console.log('accountNote:', accountNote);
-
+    
     // Handle case where user has no points yet (new user)
     const currentPoints = accountNote.punten || 0;
     const nieuweScore = currentPoints + score;

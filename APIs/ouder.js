@@ -27,7 +27,7 @@ router.get('/leerling', async (req, res) => {
 
     // groep info
     const groep_id = leerling?.['groep id'];
-    if (!groep_id) return res.status(500).send({ success: false, message: "Something went wrong" });
+    if (!groep_id) return res.status(200).send({ success: true, data: leerling });
 
     const groep = await getGroupNoteById(groep_id);
     if (!groep) return res.status(500).send({ success: false, message: "Something went wrong" });
