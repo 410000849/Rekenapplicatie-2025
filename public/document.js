@@ -115,14 +115,14 @@ async function head(page, locale) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>${await title}</title>
+    <title>${title}</title>
 
-    <link rel="icon" href="${await logo}">
-    <link rel="apple-touch-icon" type="image/png" href="${await logo}">
-    <link rel="apple-touch-startup-image" type="image/png" href="${await logo}">
+    <link rel="icon" href="${logo}">
+    <link rel="apple-touch-icon" type="image/png" href="${logo}">
+    <link rel="apple-touch-startup-image" type="image/png" href="${logo}">
 
-    <meta property="og:title" content="${await title}">
-    <meta property="og:image" content="${await logo}">
+    <meta property="og:title" content="${title}">
+    <meta property="og:image" content="${logo}">
     <meta property="og:type" content="website">
     `
 }

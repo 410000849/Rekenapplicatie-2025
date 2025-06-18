@@ -176,6 +176,16 @@ async function leaveGroup(table, email) {
     });
 }
 
+
+async function allNameAndEmails(table) {
+    return new Promise((resolve, reject) => {
+        db.all(`SELECT naam, email FROM ${table}`, (err, rows) => {
+            if (err) return reject(err);
+            resolve(rows);
+        });
+    });
+}
+
 // EXPORT THE FUNCTIONS
 export {
     getNoteByEmail,
@@ -190,5 +200,6 @@ export {
     addGroupIdToAccount,
     getAllGroupMembers,
     leaveGroup,
-    voegPuntenToe
+    voegPuntenToe,
+    allNameAndEmails
 };
