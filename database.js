@@ -176,6 +176,24 @@ async function leaveGroup(table, email) {
     });
 }
 
+async function setGroupDifficulty(groupId, game1Difficulty, game2Difficulty) {
+    return new Promise((resolve, reject) => {
+        db.run(`UPDATE groep SET game1_difficulty = ?, game2_difficulty = ? WHERE id = ?`, 
+               [game1Difficulty, game2Difficulty, groupId], function (err) {
+            if (err) return reject(err);
+            resolve(this.changes > 0);
+        });
+    });
+}
+
+async function getGroupDifficulty(groupId) {
+    return new Promise((resolve, reject) => {
+        db.get(`SELECT game1_difficulty, game2_difficulty FROM groep WHERE id = ?`, [groupId], (err, row) => {
+            if (err) return reject(err);
+            resolve(row || { game1_difficulty: 'easy', game2_difficulty: 'easy' });
+        });
+    });
+}
 
 async function allNameAndEmails(table) {
     return new Promise((resolve, reject) => {
@@ -201,5 +219,7 @@ export {
     getAllGroupMembers,
     leaveGroup,
     voegPuntenToe,
+    setGroupDifficulty,
+    getGroupDifficulty,
     allNameAndEmails
 };

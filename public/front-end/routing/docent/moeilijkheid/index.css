@@ -1,0 +1,170 @@
+/* Moeilijkheidsgraad instellingen pagina */
+#moeilijkheid {
+  background: white;
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+#moeilijkheid-info {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+#moeilijkheid h2 {
+  font-size: 28px;
+  color: #1f2454; 
+  margin-bottom: 8px;
+}
+
+#moeilijkheid-info p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+#groepid {
+  font-size: 14px;
+  color: #777;
+  font-weight: 600;
+}
+
+.difficulty-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.game-setting {
+  background: #f9f9f9;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.game-setting h3 {
+  font-size: 20px;
+  color: #1f2454;
+  margin-bottom: 8px;
+}
+
+.game-setting p {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.difficulty-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.difficulty-btn {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 100px;
+}
+
+.difficulty-btn:hover {
+  background-color: #d0d0d0;
+  transform: translateY(-2px);
+}
+
+.difficulty-btn.active {
+  background-color: #e09132;
+  color: white;
+  box-shadow: 0 4px 8px rgba(224, 145, 50, 0.3);
+}
+
+.difficulty-description {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid #e09132;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.save-settings {
+  text-align: center;
+  padding-top: 24px;
+  border-top: 1px solid #eee;
+}
+
+.save-btn {
+  background-color: #e09132;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(224, 145, 50, 0.2);
+}
+
+.save-btn:hover {
+  background-color: #cc7f28;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(224, 145, 50, 0.3);
+}
+
+.save-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.feedback-message {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: none;
+}
+
+.feedback-message.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  display: block;
+}
+
+.feedback-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  display: block;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  #moeilijkheid {
+    padding: 20px;
+    margin: 16px;
+  }
+  
+  .difficulty-buttons {
+    flex-direction: column;
+  }
+  
+  .difficulty-btn {
+    width: 100%;
+  }
+}

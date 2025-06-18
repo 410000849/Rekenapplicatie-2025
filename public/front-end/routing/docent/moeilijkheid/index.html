@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="index.css">
+
+<section id="moeilijkheid">
+    <div id="moeilijkheid-info">
+        <h2>Moeilijkheidsgraad Instellen</h2>
+        <p>Stel de moeilijkheidsgraad in voor de games van jouw groep</p>
+        <span id="groepid"></span>
+    </div>
+
+    <div class="difficulty-settings">
+        <div class="game-setting">
+            <h3>Lootbox Rekengame (Game 1)</h3>
+            <p>Stel de moeilijkheidsgraad in voor het eerste rekenspel</p>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn" data-game="1" data-level="easy">Makkelijk</button>
+                <button class="difficulty-btn" data-game="1" data-level="medium">Gemiddeld</button>
+                <button class="difficulty-btn" data-game="1" data-level="hard">Moeilijk</button>
+            </div>
+            <div class="difficulty-description" id="game1-description">
+                <strong>Makkelijk:</strong> Optellen en aftrekken (1-10), meer tijd per vraag
+            </div>
+        </div>
+
+        <div class="game-setting">
+            <h3>Rekenspel met Kaartjes (Game 2)</h3>
+            <p>Stel de moeilijkheidsgraad in voor het tweede rekenspel</p>
+            <div class="difficulty-buttons">
+                <button class="difficulty-btn" data-game="2" data-level="easy">Makkelijk</button>
+                <button class="difficulty-btn" data-game="2" data-level="medium">Gemiddeld</button>
+                <button class="difficulty-btn" data-game="2" data-level="hard">Moeilijk</button>
+            </div>
+            <div class="difficulty-description" id="game2-description">
+                <strong>Makkelijk:</strong> Doelgetallen 20-100, kaarten 5-50, 30 seconden
+            </div>
+        </div>
+    </div>
+
+    <div class="save-settings">
+        <button id="save-difficulty" class="save-btn">Instellingen Opslaan</button>
+        <div id="save-feedback" class="feedback-message"></div>
+    </div>
+</section>
+
+<script src="index.js"></script>

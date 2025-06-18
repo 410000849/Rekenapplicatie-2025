@@ -22,11 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const timerContainer = document.querySelector('.timer-container');
     const timerValueEl = document.getElementById('timer-value');
     const timerFill = document.querySelector('.timer-fill');
-    const lootbox = document.querySelector('.lootbox');
-
-    // Game state
+    const lootbox = document.querySelector('.lootbox');    // Game state
     let gameStarted = false;
     let currentLevel = 'easy';
+    let groupDifficultyLoaded = false;
     let targetNumber = 0;
     let currentCards = [];
     let selectedCards = [];
@@ -68,29 +67,101 @@ document.addEventListener('DOMContentLoaded', () => {
             numberOfCards: 7,
             timeLimit: 20
         }
-    };
-
-    // Event listeners
-    startGameBtn.addEventListener('click', startGame);
+    };    // Event listeners
+    startGameBtn.addEventListener('click', () => {
+        if (!groupDifficultyLoaded) {
+            alert('Laden van instellingen...');
+            return;
+        }
+        startGame();
+    });
     resetBtn.addEventListener('click', resetSelection);
     playAgainBtn.addEventListener('click', returnToStartScreen);
     homeBtn.addEventListener('click', () => {
         window.location.href = '/leerling/home';
     });
 
+    // Level buttons are disabled - difficulty is set by teacher
     levelBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            levelBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentLevel = btn.dataset.level;
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            return false;
         });
     });
+
+    // Load group difficulty settings
+    async function loadGroupDifficulty() {
+        try {
+            const response = await fetch('/groep/difficulty');
+            const data = await response.json();
+            
+            if (data.success) {
+                currentLevel = data.difficulties.game2_difficulty || 'easy';
+                groupDifficultyLoaded = true;
+                
+                // Update UI to show the set difficulty
+                updateLevelButtons();
+                showDifficultyMessage();
+            } else {
+                console.log('No group difficulty found, using default easy mode');
+                groupDifficultyLoaded = true;
+            }
+        } catch (error) {
+            console.error('Error loading group difficulty:', error);
+            groupDifficultyLoaded = true;
+        }
+    }
+
+    // Update level buttons to show current difficulty and disable selection
+    function updateLevelButtons() {
+        levelBtns.forEach(btn => {
+            btn.classList.remove('active');
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+            btn.style.cursor = 'not-allowed';
+            
+            if (btn.dataset.level === currentLevel) {
+                btn.classList.add('active');
+                btn.style.opacity = '1';
+            }
+        });
+    }
+
+    // Show message about difficulty being set by teacher
+    function showDifficultyMessage() {
+        const levelContainer = document.querySelector('.level-container');
+        const existingMessage = document.getElementById('difficulty-message');
+        
+        if (!existingMessage) {
+            const message = document.createElement('p');
+            message.id = 'difficulty-message';
+            message.style.fontSize = '14px';
+            message.style.color = '#666';
+            message.style.marginTop = '10px';
+            message.style.textAlign = 'center';
+            message.textContent = `Moeilijkheidsgraad ingesteld door je docent: ${getDifficultyDisplayName(currentLevel)}`;
+            levelContainer.appendChild(message);
+        }
+    }
+
+    // Get display name for difficulty
+    function getDifficultyDisplayName(level) {
+        const names = {
+            easy: 'Makkelijk',
+            medium: 'Gemiddeld', 
+            hard: 'Moeilijk'
+        };
+        return names[level] || 'Makkelijk';
+    }
 
     // Initialize game - show start screen
     function init() {
         startScreen.style.display = 'block';
         gameContainer.style.display = 'none';
         resultContainer.style.display = 'none';
+        
+        // Load group difficulty when initializing
+        loadGroupDifficulty();
     }
 
     // Return to start screen
