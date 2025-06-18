@@ -10,7 +10,10 @@ import { getAccountNoteByCookie, getNoteById, getGroupNoteById, getAllGroupMembe
 
 // API ROUTING
 router.get('/leerling', async (req, res) => {
-    const cookie = req.cookies['USER_TOKEN'].split(':')[1];
+    const cookieHeader = req.cookies['USER_TOKEN'];
+    if (!cookieHeader) return res.status(400).send({ success: false, message: "No active session found" });
+    
+    const cookie = cookieHeader.split(':')[1];
     if (!cookie) return res.status(400).send({ success: false, message: "No active session found" });
     const accountNote = await getAccountNoteByCookie(cookie);
     if (!accountNote) return res.status(500).send({ success: false, message: "Something went wrong" });
@@ -39,7 +42,10 @@ router.get('/leerling', async (req, res) => {
 })
 
 router.get('/groep', async (req, res) => {
-    const cookie = req.cookies['USER_TOKEN'].split(':')[1];
+    const cookieHeader = req.cookies['USER_TOKEN'];
+    if (!cookieHeader) return res.status(400).send({ success: false, message: "No active session found" });
+    
+    const cookie = cookieHeader.split(':')[1];
     if (!cookie) return res.status(400).send({ success: false, message: "No active session found" });
     const accountNote = await getAccountNoteByCookie(cookie);
     if (!accountNote) return res.status(500).send({ success: false, message: "Something went wrong" });
