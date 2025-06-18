@@ -17,8 +17,12 @@ async function loadContent() {
             console.log(leerling);
             kind_naam_element.textContent = leerling.naam;
             kind_email_element.textContent = leerling.email;
-            klas_naam_element.textContent = leerling?.['groep naam'];
-            klas_type_element.textContent = leerling?.['groep type'];
+            
+            if (leerling?.['groep naam']) klas_naam_element.textContent = leerling['groep naam'];
+            else klas_naam_element.parentElement.remove();
+
+            if (leerling?.['groep type']) klas_type_element.textContent = leerling?.['groep type'];
+            else klas_type_element.parentElement.remove();
         } else if (data?.success == false) {
             if (data?.message == 'Geen leerling gevonden') {
                 alert(data.message);
