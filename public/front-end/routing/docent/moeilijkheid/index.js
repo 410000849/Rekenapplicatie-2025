@@ -14,12 +14,14 @@ const descriptions = {
     game1: {
         easy: '<strong>Makkelijk:</strong> Optellen en aftrekken (1-10), meer tijd per vraag',
         medium: '<strong>Gemiddeld:</strong> Optellen, aftrekken en vermenigvuldigen (5-20), normale tijd',
-        hard: '<strong>Moeilijk:</strong> Alle bewerkingen inclusief delen (10-50), minder tijd'
+        hard: '<strong>Moeilijk:</strong> Alle bewerkingen inclusief delen (10-50), minder tijd',
+        adaptive: '<strong>Adaptief:</strong> Begint makkelijk en past zich aan op basis van prestaties'
     },
     game2: {
         easy: '<strong>Makkelijk:</strong> Doelgetallen 20-100, kaarten 5-50, 30 seconden',
         medium: '<strong>Gemiddeld:</strong> Doelgetallen 50-200, kaarten 10-80, 25 seconden',
-        hard: '<strong>Moeilijk:</strong> Doelgetallen 100-500, kaarten 25-150, 20 seconden'
+        hard: '<strong>Moeilijk:</strong> Doelgetallen 100-500, kaarten 25-150, 20 seconden',
+        adaptive: '<strong>Adaptief:</strong> Begint makkelijk en past zich aan op basis van prestaties'
     }
 };
 
@@ -63,15 +65,18 @@ function updateActiveButtons() {
         btn.classList.remove('active');
     });
     
-    // Add active class to current settings
-    document.querySelector(`[data-game="1"][data-level="${currentSettings.game1}"]`).classList.add('active');
-    document.querySelector(`[data-game="2"][data-level="${currentSettings.game2}"]`).classList.add('active');
+    // Add active class to current settings (safely)
+    const game1Btn = document.querySelector(`[data-game="1"][data-level="${currentSettings.game1}"]`);
+    const game2Btn = document.querySelector(`[data-game="2"][data-level="${currentSettings.game2}"]`);
+    
+    if (game1Btn) game1Btn.classList.add('active');
+    if (game2Btn) game2Btn.classList.add('active');
 }
 
 // Update descriptions
 function updateDescriptions() {
-    game1Description.innerHTML = descriptions.game1[currentSettings.game1];
-    game2Description.innerHTML = descriptions.game2[currentSettings.game2];
+    game1Description.innerHTML = descriptions.game1[currentSettings.game1] || 'Beschrijving niet beschikbaar';
+    game2Description.innerHTML = descriptions.game2[currentSettings.game2] || 'Beschrijving niet beschikbaar';
 }
 
 // Handle difficulty button clicks
