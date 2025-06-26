@@ -210,40 +210,40 @@ function randomNumber(min, max) {
 // Generate a math problem based on level
 function generateProblem() {
     const settings = levelSettings[currentLevel];
-    const operation = settings.operations[Math.floor(Math.random() * settings.operations.length)];
-    let num1, num2, answer;
+    const operations = settings.operations;
+    const operation = operations[Math.floor(Math.random() * operations.length)];
+    
+    // Generate numbers based on level settings
+    let num1 = randomNumber(settings.minNum, settings.maxNum);
+    let num2 = randomNumber(settings.minNum, settings.maxNum);
+    let answer;
 
-    // Ensure appropriate numbers for division
-    if (operation === '/') {
-        num2 = randomNumber(2, 10);
-        answer = randomNumber(1, 10);
-        num1 = num2 * answer;
-                    console.log(`Generating problem: ${num1} ${operation} ${num2}`);
-
-    } else {
-        num1 = randomNumber(settings.minNum, settings.maxNum);
-        num2 = randomNumber(settings.minNum, settings.maxNum);
-            console.log(`Generating problem: ${num1} ${operation} ${num2}`);
-
-        switch (operation) {
-            case '+':
-                answer = num1 + num2;
-                break;
-            case '-':
-                // Ensure positive answer for subtraction
-                if (num1 < num2) {
-                    [num1, num2] = [num2, num1];
-                }
-                answer = num1 - num2;
-                break;
-            case '*':
-                answer = num1 * num2;
-                break;
-        }
+    // Calculate answer based on operation
+    switch (operation) {
+        case '+':
+            answer = num1 + num2;
+            break;
+        case '-':
+            // Make sure result is positive
+            if (num1 < num2) {
+                [num1, num2] = [num2, num1];
+            }
+            answer = num1 - num2;
+            break;
+        case '*':
+            answer = num1 * num2;
+            break;
+        case '/':
+            // Make division easier - ensure num1 is divisible by num2
+            num2 = randomNumber(2, 5);
+            answer = randomNumber(1, 5);
+            num1 = num2 * answer;
+            break;
     }
 
     const problem = `${num1} ${operation} ${num2} = ?`;
-    return { problem, answer };
+    console.log(`Generated problem: ${problem} (answer: ${answer}) [Level: ${currentLevel}, Adaptive: ${adaptiveDifficulty}]`);
+    return { problem, answer }; // Geef het probleem en antwoord terug
 }
 
 // Generate options (one correct, two wrong)
