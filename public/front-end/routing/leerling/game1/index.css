@@ -8,7 +8,6 @@ body {
     align-items: center;
     min-height: 100vh;
     color: #333;
-    overflow-x: hidden;
 }
 
 .header {
@@ -185,27 +184,6 @@ body {
     pointer-events: none;
     z-index: 999;
     display: none;
-}
-
-.character {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    width: 150px;
-    height: 150px;
-    animation: float 3s ease-in-out infinite alternate;
-    transition: all 1s ease-out;
-    z-index: 100;
-}
-
-.character.fly-away {
-    transform: translateX(100vw) translateY(-100vh) rotate(360deg);
-    opacity: 0;
-}
-
-@keyframes float {
-    from { transform: translateY(0); }
-    to { transform: translateY(-15px); }
 }
 
 .answer-buttons {
