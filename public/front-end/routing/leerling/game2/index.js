@@ -41,6 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let mediumPoints = 15;
     let hardPoints = 20;
 
+    // Adaptive difficulty variables for Game 2
+    let adaptiveDifficulty = 1; // Start level (1=easy, 2=medium, 3=hard)
+    let consecutiveCorrect = 0;
+    let consecutiveWrong = 0;
+
     // Level settings
     const levels = {
         easy: {
@@ -66,6 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
             maxCardValue: 150,
             numberOfCards: 7,
             timeLimit: 20
+        },
+        adaptive: {
+            minTarget: 20,
+            maxTarget: 100,
+            minCardValue: 5,
+            maxCardValue: 50,
+            numberOfCards: 5,
+            timeLimit: 30
         }
     };    // Event listeners
     startGameBtn.addEventListener('click', () => {
@@ -149,7 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const names = {
             easy: 'Makkelijk',
             medium: 'Gemiddeld', 
-            hard: 'Moeilijk'
+            hard: 'Moeilijk',
+            adaptive: 'Adaptief'
         };
         return names[level] || 'Makkelijk';
     }
@@ -178,6 +192,14 @@ document.addEventListener('DOMContentLoaded', () => {
         correctAnswers = 0;
         currentQuestion = 0;
         updateScore();
+
+        // Reset adaptive difficulty if needed
+        if (currentLevel === 'adaptive') {
+            adaptiveDifficulty = 1;
+            consecutiveCorrect = 0;
+            consecutiveWrong = 0;
+            updateAdaptiveSettings();
+        }
 
         // Show game container and hide other screens
         startScreen.style.display = 'none';
@@ -297,12 +319,25 @@ document.addEventListener('DOMContentLoaded', () => {
             feedbackEl.className = 'feedback correct';
 
             correctAnswers++;
+            
+            // Call adaptive difficulty adjustment
+            adjustAdaptiveDifficulty(true);
+            
             if (currentLevel === 'easy') {
                 score += easyPoints;
             } else if (currentLevel === 'medium') {
                 score += mediumPoints;
             } else if (currentLevel === 'hard') {
                 score += hardPoints;
+            } else if (currentLevel === 'adaptive') {
+                // Adaptive scoring based on current difficulty level
+                if (adaptiveDifficulty === 1) {
+                    score += easyPoints;
+                } else if (adaptiveDifficulty === 2) {
+                    score += mediumPoints;
+                } else if (adaptiveDifficulty === 3) {
+                    score += hardPoints;
+                }
             }
             updateScore();
 
@@ -421,6 +456,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function timeUp() {
         stopTimer();
+        
+        // Call adaptive difficulty adjustment for timeout (incorrect)
+        adjustAdaptiveDifficulty(false);
 
         // Show the correct answer combination
         let correctAnswerText = 'Tijd is op! Een juist antwoord was: ' + correctCombination.join(' + ') + ' = ' + targetNumber;
@@ -477,4 +515,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize the game
     init();
+
+    // Adaptive difficulty functions for Game 2
+    function updateAdaptiveSettings() {
+        if (currentLevel !== 'adaptive') return;
+        
+        if (adaptiveDifficulty === 1) {
+            // Easy settings
+            levels.adaptive.minTarget = 20;
+            levels.adaptive.maxTarget = 100;
+            levels.adaptive.minCardValue = 5;
+            levels.adaptive.maxCardValue = 50;
+            levels.adaptive.numberOfCards = 5;
+            levels.adaptive.timeLimit = 30;
+        } else if (adaptiveDifficulty === 2) {
+            // Medium settings
+            levels.adaptive.minTarget = 50;
+            levels.adaptive.maxTarget = 200;
+            levels.adaptive.minCardValue = 10;
+            levels.adaptive.maxCardValue = 80;
+            levels.adaptive.numberOfCards = 6;
+            levels.adaptive.timeLimit = 25;
+        } else if (adaptiveDifficulty === 3) {
+            // Hard settings
+            levels.adaptive.minTarget = 100;
+            levels.adaptive.maxTarget = 500;
+            levels.adaptive.minCardValue = 25;
+            levels.adaptive.maxCardValue = 150;
+            levels.adaptive.numberOfCards = 7;
+            levels.adaptive.timeLimit = 20;
+        }
+    }
+
+    function adjustAdaptiveDifficulty(isCorrect) {
+        if (currentLevel !== 'adaptive') return;
+        
+        if (isCorrect) {
+            consecutiveCorrect++;
+            consecutiveWrong = 0;
+            
+            if (consecutiveCorrect >= 2 && adaptiveDifficulty < 3) {
+                adaptiveDifficulty++;
+                consecutiveCorrect = 0;
+                updateAdaptiveSettings();
+                console.log(`Game 2: Moeilijkheid verhoogd naar level ${adaptiveDifficulty}`);
+            }
+        } else {
+            consecutiveWrong++;
+            consecutiveCorrect = 0;
+            
+            if (consecutiveWrong >= 2 && adaptiveDifficulty > 1) {
+                adaptiveDifficulty--;
+                consecutiveWrong = 0;
+                updateAdaptiveSettings();
+                console.log(`Game 2: Moeilijkheid verlaagd naar level ${adaptiveDifficulty}`);
+            }
+        }
+    }
 });

@@ -76,7 +76,8 @@ router.post('/difficulty', async (req, res) => {
         return res.status(400).send({ success: false, message: 'Moeilijkheidsgraad voor beide games is vereist' });
     }
 
-    const validDifficulties = ['easy', 'medium', 'hard'];    if (!validDifficulties.includes(game1Difficulty) || !validDifficulties.includes(game2Difficulty)) {
+    const validDifficulties = ['easy', 'medium', 'hard', 'adaptive'];
+    if (!validDifficulties.includes(game1Difficulty) || !validDifficulties.includes(game2Difficulty)) {
         return res.status(400).send({ success: false, message: 'Ongeldige moeilijkheidsgraad' });
     }
 

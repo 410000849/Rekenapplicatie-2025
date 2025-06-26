@@ -6,7 +6,7 @@ let correctAnswer = null;
 let options = [];
 let gameRunning = false;
 let currentQuestionIndex = 0;
-let totalQuestions = 1; // Hardcoded to 10 questions
+let totalQuestions = 10; // Hardcoded to 10 questions
 let correctAnswers = 0;
 let timerInterval = null;
 let timePerQuestion = 10; // Hardcoded to 10 seconds per question
@@ -38,8 +38,76 @@ const levelSettings = {
         operations: ['+', '-', '*', '/'],
         minNum: 10,
         maxNum: 50
+    },
+    // gemaakt door Brandon
+        adaptive: {
+        timePerOption: 800, // Start met medium timing
+        operations: ['+', '-'], // Start met makkelijke operaties
+        minNum: 1, 
+        maxNum: 10
     }
 };
+
+// moeilijksheid graad (brandon)
+let adaptiveDifficulty = 1; // Start level (1=easy, 2=medium, 3=hard)
+let consecutiveCorrect = 0;
+let consecutiveWrong = 0;
+
+// brandon
+function updateAdaptiveSettings() {
+    console.log(`Updating adaptive settings for difficulty level ${adaptiveDifficulty}`);
+    if (currentLevel !== 'adaptive') return;
+    
+    // Hier moet jij code toevoegen die dit doet:
+    if (adaptiveDifficulty === 1) {
+        // (makkelijk)
+        levelSettings.adaptive.operations = ['+', '-']
+        levelSettings.adaptive.minNum = 1
+        levelSettings.adaptive.maxNum = 10
+    } else if (adaptiveDifficulty === 2) {
+        // (gemiddeld)
+        levelSettings.adaptive.operations = ['+', '-', '*']
+        levelSettings.adaptive.minNum = 5
+        levelSettings.adaptive.maxNum = 20
+    } else if (adaptiveDifficulty === 3) {
+        //(moeilijk)
+        levelSettings.adaptive.operations = ['+', '-', '*', '/']
+        levelSettings.adaptive.minNum = 10
+        levelSettings.adaptive.maxNum = 50
+    }
+}
+
+
+// adapative moeilijksheid update (brandon)
+function adjustAdaptiveDifficulty(isCorrect) {
+    if (currentLevel !== 'adaptive') return;
+    
+    if (isCorrect) {
+        // Goed antwoord
+        consecutiveCorrect++;
+        consecutiveWrong = 0;
+        
+        // Na 2 goede antwoorden op rij moeilijker 
+        if (consecutiveCorrect >= 2 && adaptiveDifficulty < 3) {
+            adaptiveDifficulty++;
+            consecutiveCorrect = 0;
+            updateAdaptiveSettings();
+            console.log(`Moeilijkheid verhoogd naar level ${adaptiveDifficulty}`);
+        }
+    } else {
+        // Fout antwoord
+        consecutiveWrong++;
+        consecutiveCorrect = 0;
+        
+        // Na 2 foute antwoorden op rij: makkelijker maken
+        if (consecutiveWrong >= 2 && adaptiveDifficulty > 1) {
+            adaptiveDifficulty--;
+            consecutiveWrong = 0;
+            updateAdaptiveSettings();
+            console.log(`Moeilijkheid verlaagd naar level ${adaptiveDifficulty}`);
+        }
+    }
+}
 
 // DOM elements
 const problemContainer = document.querySelector('.problem-container');
@@ -128,7 +196,8 @@ function getDifficultyDisplayName(level) {
     const names = {
         easy: 'Makkelijk',
         medium: 'Gemiddeld', 
-        hard: 'Moeilijk'
+        hard: 'Moeilijk',
+        adaptive: 'Adaptief'
     };
     return names[level] || 'Makkelijk';
 }
@@ -149,9 +218,12 @@ function generateProblem() {
         num2 = randomNumber(2, 10);
         answer = randomNumber(1, 10);
         num1 = num2 * answer;
+                    console.log(`Generating problem: ${num1} ${operation} ${num2}`);
+
     } else {
         num1 = randomNumber(settings.minNum, settings.maxNum);
         num2 = randomNumber(settings.minNum, settings.maxNum);
+            console.log(`Generating problem: ${num1} ${operation} ${num2}`);
 
         switch (operation) {
             case '+':
@@ -302,13 +374,26 @@ function checkAnswer(selectedOption) {
         if (isCorrect) {
             feedbackElement.innerHTML = `<span>Goed gedaan!</span><img src="${happyImage}" alt="Goed">`;
             feedbackElement.style.color = 'green';
+            
+            // Add points based on difficulty level
             if (currentLevel === 'easy') {
                 score += easyPoints;
             } else if (currentLevel === 'medium') {
                 score += mediumPoints;
             } else if (currentLevel === 'hard') {
                 score += hardPoints;
-            } correctAnswers++;
+            } else if (currentLevel === 'adaptive') {
+                // Adaptive scoring based on current difficulty level
+                if (adaptiveDifficulty === 1) {
+                    score += easyPoints;
+                } else if (adaptiveDifficulty === 2) {
+                    score += mediumPoints;
+                } else if (adaptiveDifficulty === 3) {
+                    score += hardPoints;
+                }
+            }
+            
+            correctAnswers++;
             lootbox.classList.add('animate');
             setTimeout(() => {
                 lootbox.classList.remove('animate');
@@ -320,6 +405,11 @@ function checkAnswer(selectedOption) {
     }
 
     scoreElement.textContent = score;
+
+    // Call adaptive difficulty adjustment (if not timeout)
+    if (selectedOption !== 'timeout') {
+        adjustAdaptiveDifficulty(isCorrect);
+    }
 
     currentQuestionIndex++;
 
@@ -443,6 +533,16 @@ function startGame() {
     currentQuestionIndex = 0;
     correctAnswers = 0;
     scoreElement.textContent = score;
+
+
+     if (currentLevel === 'adaptive') {
+    adaptiveDifficulty = 1;
+    consecutiveCorrect = 0;
+    consecutiveWrong = 0;
+    updateAdaptiveSettings();
+    }
+    
+
 
     // Show game container
     document.querySelector('.game-container').style.display = 'block';
