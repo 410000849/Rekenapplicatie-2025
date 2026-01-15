@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS Test Page</title>
+</head>
+<body>
+    <h1>XSS Testing Page</h1>
+    
+    <form id="xss-form">
+        <label>Test Input (XSS Vulnerable):</label><br>
+        <input type="text" id="xss-input" placeholder="Try: <script>alert('XSS')</script>"><br><br>
+        <button type="button" onclick="displayInput()">Test XSS</button>
+    </form>
+    
+    <div id="output"></div>
+    
+    <script>
+        function displayInput() {
+            const input = document.getElementById('xss-input').value;
+            // VULNERABLE: Direct innerHTML without sanitization
+            document.getElementById('output').innerHTML = `<p>Your input: ${input}</p>`;
+        }
+        
+        // Auto-execute any scripts in URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const xss = urlParams.get('xss');
+        if (xss) {
+            document.body.innerHTML += `<div>URL Parameter: ${xss}</div>`;
+        }
+    </script>
+</body>
+</html>

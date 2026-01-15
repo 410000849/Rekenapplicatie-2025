@@ -1,5 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import logger from './logger.js';
 
 const app = express();
 app.use(cookieParser());
@@ -14,6 +15,7 @@ import admin from './APIs/admin.js';
 import groep from './APIs/groep.js';
 import ouder from './APIs/ouder.js';
 import game from './APIs/game.js';
+import vulnerable from './APIs/vulnerable.js';
 
 // DEBUG MODE
 const debug = false;
@@ -45,6 +47,7 @@ app.use('/admin', admin)
 app.use('/groep', groep)
 app.use('/ouder', ouder)
 app.use('/game', game)
+app.use('/vuln', vulnerable)
 
 // ROUTING
 app.get('*', async (req, res) => {
@@ -75,5 +78,6 @@ app.get('*', async (req, res) => {
 
 const PORT = 300;
 app.listen(PORT, () => {
+    logger.info(`Server started on PORT: ${PORT}`);
     console.log('App is listening on PORT: ', PORT);
 })

